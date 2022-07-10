@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import fs from 'fs/promises'
-import { API } from "../../index";
+import API from "../../index";
 
 //TODO : stop reading app.json, read config variable
 export default function CollectionRouter(API: API) {

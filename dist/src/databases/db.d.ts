@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import { API } from '../index';
+import API from '../index';
 export declare class Databases {
     private api;
     userDb: Knex<any> | null;

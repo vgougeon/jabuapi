@@ -1,7 +1,7 @@
 import knex, { Knex } from "knex"
 import { ICollection, IField, IRelation } from "../../types/app.interface"
 import fs from 'fs/promises'
-import { API } from "../../index"
+import API from "../../index"
 
 export class SQL {
     constructor(private API: API) { }

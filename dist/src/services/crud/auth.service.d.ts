@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { API } from '../../index';
+import API from '../../index';
 export declare class AuthService {
     private api;
     constructor(api: API);

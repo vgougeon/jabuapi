@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import fs from 'fs/promises'
-import { API } from "../../index";
+import API from "../../index";
 
 
 

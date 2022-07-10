@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import { API } from '../index';
+import API from '../index';
 import { IApp } from '../types/app.interface';
 
 export class JsonService {

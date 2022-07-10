@@ -1,6 +1,6 @@
 import { Knex } from "knex";
 import { ICollection, IField, IRelation } from "../../types/app.interface";
-import { API } from "../../index";
+import API from "../../index";
 export declare class SQL {
     private API;
     constructor(API: API);

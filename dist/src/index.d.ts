@@ -11,7 +11,7 @@ export interface APIOptions {
     app: Application;
     root: string;
 }
-export declare class API {
+export default class API {
     options: APIOptions;
     app: Application;
     appService: AppService;

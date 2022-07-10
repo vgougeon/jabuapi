@@ -1,4 +1,4 @@
-import { API } from "../index";
+import API from "../index";
 export declare class AppService {
     private api;
     constructor(api: API);

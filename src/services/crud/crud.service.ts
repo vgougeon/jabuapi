@@ -5,7 +5,7 @@ import { isEmail, isInt, isNumber, isNumberString, maxLength } from 'class-valid
 import ErrorMapper from '../../utils/error-mapper';
 import fileUpload, { UploadedFile } from 'express-fileupload';
 import { nanoid } from 'nanoid';
-import { API } from '../../index';
+import API from '../../index';
 export class CrudService {
     constructor(private api: API) {}
 

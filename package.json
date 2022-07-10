@@ -2,7 +2,8 @@
   "name": "jabuapi",
   "version": "1.0.0",
   "description": "Jabu API - Headless CMS",
-  "main": "./dist/index.js",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
   "scripts": {
     "build": "tsc"
   },

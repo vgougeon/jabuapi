@@ -1,5 +1,5 @@
 import { Application, Request, Response, Router } from 'express';
-import { API } from '../index';
+import API from '../index';
 
 export class RouterService {
 

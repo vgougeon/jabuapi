@@ -19,7 +19,7 @@ export interface APIOptions {
     root: string;
 }
 
-export class API {
+export default class API {
     app: Application;
     appService: AppService;
     configService: ConfigService;
@@ -86,5 +86,3 @@ export class API {
             })
     }
 }
-
-console.log("OK!")

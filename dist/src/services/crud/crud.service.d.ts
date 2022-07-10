@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import ErrorMapper from '../../utils/error-mapper';
 import { UploadedFile } from 'express-fileupload';
-import { API } from '../../index';
+import API from '../../index';
 export declare class CrudService {
     private api;
     constructor(api: API);
