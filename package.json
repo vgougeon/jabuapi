@@ -1,0 +1,17 @@
+{
+  "name": "jabuapi",
+  "version": "1.0.0",
+  "description": "Jabu API - Headless CMS",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vgougeon/jabuapi.git"
+  },
+  "author": "Vincent GOUGEON",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vgougeon/jabuapi/issues"
+  },
+  "homepage": "https://github.com/vgougeon/jabuapi#readme"
+}
