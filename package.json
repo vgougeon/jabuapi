@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Jabu API - Headless CMS",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "build": "tsc"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vgougeon/jabuapi.git"
@@ -13,5 +15,27 @@
   "bugs": {
     "url": "https://github.com/vgougeon/jabuapi/issues"
   },
-  "homepage": "https://github.com/vgougeon/jabuapi#readme"
+  "homepage": "https://github.com/vgougeon/jabuapi#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "better-sqlite3": "^7.5.0",
+    "change-case": "^4.1.2",
+    "class-validator": "^0.13.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "express-fileupload": "^1.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^2.1.0",
+    "mysql2": "^2.3.3",
+    "nanoid": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/express-fileupload": "^1.2.2",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/node": "^17.0.21",
+    "typescript": "^4.6.2"
+  }
 }
