@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { API } from '../../geni';
+import { API } from '../../index';
 
 export class AuthService {
     constructor(private api: API) {}

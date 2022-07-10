@@ -1,4 +1,4 @@
-import { API } from "../geni";
+import { API } from "../index";
 import { IApp } from "../types/app.interface";
 import { IConfig } from "../types/config.interface";
 

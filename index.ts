@@ -85,6 +85,6 @@ export class API {
                 })
             })
     }
-
-
 }
+
+console.log("OK!")

@@ -2,7 +2,7 @@ import { Request, Response, Router } from "express";
 import knex from "knex";
 import bcrypt from "bcrypt";
 import fs from 'fs/promises';
-import { API } from "../../geni";
+import { API } from "../../index";
 
 
 export default function createSetupRoutes(API: API) {

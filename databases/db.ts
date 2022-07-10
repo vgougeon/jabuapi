@@ -1,5 +1,5 @@
 import { Knex, knex } from 'knex';
-import { API } from '../geni';
+import { API } from '../index';
 import { IConfig } from '../types/config.interface';
 export class Databases {
 
