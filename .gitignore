@@ -1,1 +1,7 @@
 node_modules
+index.ts
+app.json
+settings.json
+medias
+transactions.sql
+nodemon.json
