@@ -70,7 +70,7 @@ export class CrudService {
     findOne(collectionName: string) {
         return async (req: Request, res: Response) => {
             const relations = this.api.configService.getAllRelations(collectionName)
-            let query = this.api.db.userDb?.(collectionName).where({ id: +req.params.id })
+            let query = this.api.db.userDb?.(collectionName).where({ [collectionName + '.id']: +req.params.id })
             .select(this.selectFields(collectionName))
 
             for (let relation of relations) {
