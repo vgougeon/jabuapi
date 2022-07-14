@@ -109,7 +109,7 @@ class CrudService {
                     if (err)
                         return reject(err);
                     else
-                        resolve(`/api/media/${media.name}`);
+                        resolve(`/api/medias/${media.name}`);
                 });
             });
         });

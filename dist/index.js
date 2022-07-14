@@ -44,6 +44,8 @@ class API {
     parseOptions(options) {
         if (options.root.endsWith('/'))
             options.root.slice(0, -1);
+        if (options.force === undefined)
+            options.force = false;
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -69,12 +71,13 @@ class API {
         return __awaiter(this, void 0, void 0, function* () {
             const app = this.app;
             yield this.db.connectToUserDb()
-                .then(() => this.appService.initDb())
+                .then(() => { if (this.options.force)
+                return this.appService.initDb(); })
                 .then(() => this.routerService.generateRoutes(app))
                 .then(() => {
-                app.use('/', express_1.default.static(path_1.default.join(__dirname, './admin/')));
+                app.use('/', express_1.default.static(path_1.default.join(__dirname, '../admin/')));
                 app.use('/*', (req, res) => {
-                    res.sendFile(path_1.default.join(__dirname, './admin/index.html'));
+                    res.sendFile(path_1.default.join(__dirname, '../admin/index.html'));
                 });
             });
         });

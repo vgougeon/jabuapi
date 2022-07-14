@@ -8,8 +8,12 @@ import { JsonService } from "./services/json.service";
 import { RouterService } from "./services/router.service";
 import { SQL } from "./services/routers/sql";
 export interface APIOptions {
+    /** Your express application goes here. */
     app: Application;
+    /** The path where JabuAPI will create config json, and store medias */
     root: string;
+    /** /!\ When true, the database will be recreated during launch time and all data will be lost */
+    force?: boolean;
 }
 export default class API {
     options: APIOptions;

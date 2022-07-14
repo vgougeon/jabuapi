@@ -101,7 +101,7 @@ export class CrudService {
         return new Promise((resolve, reject) => {
             media.mv(path, (err) => {
                 if (err) return reject(err)
-                else resolve(`/api/media/${media.name}`)
+                else resolve(`/api/medias/${media.name}`)
             })
         })
     }

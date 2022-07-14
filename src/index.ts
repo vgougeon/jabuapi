@@ -15,8 +15,12 @@ import { SQL } from "./services/routers/sql";
 import CollectionRouter from "./services/routers/collections";
 
 export interface APIOptions {
+    /** Your express application goes here. */
     app: Application;
+    /** The path where JabuAPI will create config json, and store medias */
     root: string;
+    /** /!\ When true, the database will be recreated during launch time and all data will be lost */
+    force?: boolean;
 }
 
 export default class API {
@@ -44,7 +48,8 @@ export default class API {
     }
 
     parseOptions(options: APIOptions) {
-        if (options.root.endsWith('/')) options.root.slice(0, -1)
+        if(options.root.endsWith('/')) options.root.slice(0, -1)
+        if(options.force === undefined) options.force = false
     }
 
     async init() {
@@ -76,12 +81,12 @@ export default class API {
     async initUserApi() {
         const app = this.app
         await this.db.connectToUserDb()
-            .then(() => this.appService.initDb())
+            .then(() => { if(this.options.force) return this.appService.initDb() })
             .then(() => this.routerService.generateRoutes(app))
             .then(() => {
-                app.use('/', express.static(path.join(__dirname, './admin/')))
+                app.use('/', express.static(path.join(__dirname, '../admin/')))
                 app.use('/*', (req, res) => {
-                    res.sendFile(path.join(__dirname, './admin/index.html'))
+                    res.sendFile(path.join(__dirname, '../admin/index.html'))
                 })
             })
     }
