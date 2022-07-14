@@ -83,7 +83,7 @@ export class CrudService {
 
             const item = await query?.first()
             if (!item) return res.status(404).send(item)
-            return res.send(item)
+            return res.send(this.toJson(item))
         }
     }
 

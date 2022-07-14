@@ -82,7 +82,7 @@ class CrudService {
             const item = yield (query === null || query === void 0 ? void 0 : query.first());
             if (!item)
                 return res.status(404).send(item);
-            return res.send(item);
+            return res.send(this.toJson(item));
         });
     }
     insert(collectionName) {
