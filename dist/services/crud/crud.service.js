@@ -73,7 +73,13 @@ class CrudService {
     findOne(collectionName) {
         return (req, res) => __awaiter(this, void 0, void 0, function* () {
             var _a, _b;
-            const item = yield ((_b = (_a = this.api.db).userDb) === null || _b === void 0 ? void 0 : _b.call(_a, collectionName).where({ id: +req.params.id }).first());
+            const relations = this.api.configService.getAllRelations(collectionName);
+            let query = (_b = (_a = this.api.db).userDb) === null || _b === void 0 ? void 0 : _b.call(_a, collectionName).select(this.selectFields(collectionName));
+            for (let relation of relations) {
+                if (relation.options.type === 'ASYMMETRIC' && relation.options.leftTable === collectionName)
+                    query = query === null || query === void 0 ? void 0 : query.leftJoin(relation.options.rightTable, `${relation.options.rightTable}.${relation.options.rightReference}`, `${collectionName}.${relation.options.fieldName}`).select(this.selectFields(relation.options.rightTable, relation.options.fieldName));
+            }
+            const item = yield (query === null || query === void 0 ? void 0 : query.first());
             if (!item)
                 return res.status(404).send(item);
             return res.send(item);
@@ -121,6 +127,7 @@ class CrudService {
             const collection = this.api.configService.app.collections[name];
             const relations = this.api.configService.getAllRelations(name);
             const fields = this.api.configService.getFields(name);
+            console.log(body);
             if (context === 'insert') {
                 const fields = Object.entries(collection.fields).map(([name, options]) => ({ name, options }));
                 const createdAt = fields.filter(i => i.options.type === 'CREATED_AT' || i.options.type === 'UPDATED_AT');
