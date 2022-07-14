@@ -74,7 +74,7 @@ class CrudService {
         return (req, res) => __awaiter(this, void 0, void 0, function* () {
             var _a, _b;
             const relations = this.api.configService.getAllRelations(collectionName);
-            let query = (_b = (_a = this.api.db).userDb) === null || _b === void 0 ? void 0 : _b.call(_a, collectionName).where({ id: +req.params.id }).select(this.selectFields(collectionName));
+            let query = (_b = (_a = this.api.db).userDb) === null || _b === void 0 ? void 0 : _b.call(_a, collectionName).where({ [collectionName + '.id']: +req.params.id }).select(this.selectFields(collectionName));
             for (let relation of relations) {
                 if (relation.options.type === 'ASYMMETRIC' && relation.options.leftTable === collectionName)
                     query = query === null || query === void 0 ? void 0 : query.leftJoin(relation.options.rightTable, `${relation.options.rightTable}.${relation.options.rightReference}`, `${collectionName}.${relation.options.fieldName}`).select(this.selectFields(relation.options.rightTable, relation.options.fieldName));
