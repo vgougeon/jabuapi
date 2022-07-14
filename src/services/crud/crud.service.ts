@@ -70,7 +70,8 @@ export class CrudService {
     findOne(collectionName: string) {
         return async (req: Request, res: Response) => {
             const relations = this.api.configService.getAllRelations(collectionName)
-            let query = this.api.db.userDb?.(collectionName).select(this.selectFields(collectionName))
+            let query = this.api.db.userDb?.(collectionName).where({ id: +req.params.id })
+            .select(this.selectFields(collectionName))
 
             for (let relation of relations) {
                 if (relation.options.type === 'ASYMMETRIC' && relation.options.leftTable === collectionName)
