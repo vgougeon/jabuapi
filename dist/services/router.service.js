@@ -33,6 +33,7 @@ class RouterService {
                 this.router.get(`/${collection.name}`, this.api.crudService.findAll(collection.name));
                 this.router.get(`/${collection.name}/:id`, this.api.crudService.findOne(collection.name));
                 this.router.post(`/${collection.name}`, this.api.crudService.insert(collection.name));
+                this.router.put(`/${collection.name}/:id`, this.api.crudService.update(collection.name));
             }
             const authCollection = collections.find(c => { var _a, _b; return !!((_b = (_a = c.options.config) === null || _a === void 0 ? void 0 : _a.auth) === null || _b === void 0 ? void 0 : _b.identifier); });
             if (authCollection) {

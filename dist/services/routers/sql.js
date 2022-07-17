@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SQL = void 0;
 const promises_1 = __importDefault(require("fs/promises"));
+const field_singleton_1 = require("../../fields/field.singleton");
 class SQL {
     constructor(API) {
         this.API = API;
@@ -42,8 +43,9 @@ class SQL {
         const name = Object.keys(collection)[0];
         const fields = Object.entries(collection[name].fields).map(([name, options]) => ({ name, options }));
         const creating = (_a = this.API.db.userDb) === null || _a === void 0 ? void 0 : _a.schema.createTable(name, (table) => {
+            var _a;
             for (let field of fields) {
-                this.fieldGenerator(table, field);
+                (_a = field_singleton_1.FieldSingleton.get(field.options.type)) === null || _a === void 0 ? void 0 : _a.createField(table, field);
             }
         });
         this.appendSQL(creating.toString(), creating);
@@ -52,7 +54,8 @@ class SQL {
         var _a;
         const field = Object.entries(body).map(([name, options]) => ({ name, options }))[0];
         const adding = (_a = this.API.db.userDb) === null || _a === void 0 ? void 0 : _a.schema.alterTable(collection, (table) => {
-            this.fieldGenerator(table, field);
+            var _a;
+            (_a = field_singleton_1.FieldSingleton.get(field.options.type)) === null || _a === void 0 ? void 0 : _a.createField(table, field);
         });
         this.appendSQL(adding.toString(), adding);
     }
@@ -97,45 +100,6 @@ class SQL {
             });
             this.appendSQL(adding.toString(), adding);
         }
-    }
-    fieldGenerator(table, field) {
-        let t;
-        if (field.options.type === 'ID')
-            table.increments();
-        if (field.options.type === 'EMAIL')
-            t = table.string(field.name);
-        if (field.options.type === 'STRING')
-            t = table.string(field.name);
-        if (field.options.type === 'MEDIA')
-            t = table.string(field.name); // TODO: Create external table with size, name, and url, switch to relation
-        if (field.options.type === 'PASSWORD')
-            t = table.string(field.name);
-        if (field.options.type === 'TEXT')
-            t = table.text(field.name);
-        if (field.options.type === 'RICHTEXT')
-            t = table.text(field.name);
-        if (field.options.type === 'JSON')
-            t = table.json(field.name);
-        if (field.options.type === 'BOOLEAN')
-            t = table.boolean(field.name);
-        if (field.options.type === 'INTEGER')
-            t = table.integer(field.name);
-        if (field.options.type === 'FLOAT')
-            t = table.float(field.name);
-        if (field.options.type === 'DATE')
-            t = table.datetime(field.name);
-        if (field.options.type === 'CREATED_AT')
-            t = table.datetime(field.name);
-        if (field.options.type === 'UPDATED_AT')
-            t = table.datetime(field.name);
-        if (field.options.type === 'IP')
-            t = table.string(field.name);
-        if (field.options.nullable)
-            t === null || t === void 0 ? void 0 : t.nullable();
-        else
-            t === null || t === void 0 ? void 0 : t.notNullable();
-        if (field.options.unique)
-            t === null || t === void 0 ? void 0 : t.unique();
     }
 }
 exports.SQL = SQL;

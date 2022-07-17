@@ -1,4 +1,3 @@
-import { Knex } from "knex";
 import { ICollection, IField, IRelation } from "../../types/app.interface";
 import API from "../../index";
 export declare class SQL {
@@ -18,9 +17,5 @@ export declare class SQL {
     removeField(collection: string, field: string): any;
     addRelation(collection: string, body: {
         [key: string]: IRelation;
-    }): void;
-    fieldGenerator(table: Knex.CreateTableBuilder, field: {
-        name: string;
-        options: IField;
     }): void;
 }

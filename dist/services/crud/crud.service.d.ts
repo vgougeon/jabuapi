@@ -14,6 +14,7 @@ export declare class CrudService {
     findAll(collectionName: string): (req: Request, res: Response) => Promise<void>;
     findOne(collectionName: string): (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
     insert(collectionName: string): (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    update(collectionName: string): (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
     saveMedia(media: UploadedFile): Promise<unknown>;
     mapBody(body: any, name: string, context?: string, options?: {
         req: Request;

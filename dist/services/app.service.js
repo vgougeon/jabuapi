@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppService = void 0;
+const field_singleton_1 = require("../fields/field.singleton");
 class AppService {
     constructor(api) {
         this.api = api;
@@ -35,8 +36,9 @@ class AppService {
                     const fields = Object.entries(collection.options.fields)
                         .map(([name, options]) => ({ name, options: options }));
                     yield this.api.db.userDb.schema.createTable(collection.name, (table) => {
+                        var _a;
                         for (let field of fields) {
-                            this.api.SQL.fieldGenerator(table, field);
+                            (_a = field_singleton_1.FieldSingleton.get(field.options.type)) === null || _a === void 0 ? void 0 : _a.createField(table, field);
                         }
                     });
                 }

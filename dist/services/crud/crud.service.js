@@ -107,6 +107,28 @@ class CrudService {
             }
         });
     }
+    update(collectionName) {
+        return (req, res) => __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d;
+            const { mapped, error } = yield this.mapBody(Object.assign(Object.assign({}, req.body), req.files || {}), collectionName, 'update', { req, res });
+            if (error.errorsFound())
+                return res.status(400).send(error.getMap());
+            try {
+                const id = yield ((_b = (_a = this.api.db).userDb) === null || _b === void 0 ? void 0 : _b.call(_a, collectionName).update(Object.assign({}, mapped)).where({ id: req.params.id }));
+                if (id) {
+                    const item = yield ((_d = (_c = this.api.db).userDb) === null || _d === void 0 ? void 0 : _d.call(_c, collectionName).where({ id: id }).first());
+                    return res.send(item);
+                }
+                else {
+                    return res.status(400).send('Unknown error');
+                }
+            }
+            catch (err) {
+                console.log("ERROR", err.sqlMessage);
+                return res.status(500).send(err.sqlMessage);
+            }
+        });
+    }
     saveMedia(media) {
         return __awaiter(this, void 0, void 0, function* () {
             const path = `${this.api.options.root}/medias/${media.name}`;
