@@ -1,3 +1,4 @@
+import { FieldSingleton } from "../fields/field.singleton";
 import API from "../index";
 import { IApp } from "../types/app.interface";
 export class AppService {
@@ -26,7 +27,7 @@ export class AppService {
                     .map(([name, options]) => ({ name, options: options }))
                 await this.api.db.userDb.schema.createTable(collection.name, (table) => {
                     for (let field of fields) {
-                        this.api.SQL.fieldGenerator(table, field)
+                        FieldSingleton.get(field.options.type)?.createField(table, field)
                     }
                 })
             }

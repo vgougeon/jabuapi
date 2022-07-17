@@ -1,7 +1,7 @@
-import knex, { Knex } from "knex"
 import { ICollection, IField, IRelation } from "../../types/app.interface"
 import fs from 'fs/promises'
 import API from "../../index"
+import { FieldSingleton } from "../../fields/field.singleton"
 
 export class SQL {
     constructor(private API: API) { }
@@ -30,7 +30,7 @@ export class SQL {
         const fields = Object.entries(collection[name].fields).map(([name, options]) => ({ name, options }))
         const creating = this.API.db.userDb?.schema.createTable(name, (table) => {
             for (let field of fields) {
-                this.fieldGenerator(table, field)
+                FieldSingleton.get(field.options.type)?.createField(table, field)
             }
         })
         this.appendSQL(creating!.toString(), creating!)
@@ -39,7 +39,7 @@ export class SQL {
     addField(collection: string, body: { [key: string]: IField }): any {
         const field = Object.entries(body).map(([name, options]) => ({ name, options }))[0]
         const adding = this.API.db.userDb?.schema.alterTable(collection, (table) => {
-            this.fieldGenerator(table, field)
+            FieldSingleton.get(field.options.type)?.createField(table, field)
         })
         this.appendSQL(adding!.toString(), adding!)
     }
@@ -84,26 +84,5 @@ export class SQL {
             })
             this.appendSQL(adding!.toString(), adding!)
         }
-    }
-
-    fieldGenerator(table: Knex.CreateTableBuilder, field: { name: string; options: IField }) {
-        let t;
-        if (field.options.type === 'ID') table.increments()
-        if (field.options.type === 'EMAIL') t = table.string(field.name);
-        if (field.options.type === 'STRING') t = table.string(field.name);
-        if (field.options.type === 'MEDIA') t = table.string(field.name); // TODO: Create external table with size, name, and url, switch to relation
-        if (field.options.type === 'PASSWORD') t = table.string(field.name);
-        if (field.options.type === 'TEXT') t = table.text(field.name);
-        if (field.options.type === 'RICHTEXT') t = table.text(field.name);
-        if (field.options.type === 'JSON') t = table.json(field.name);
-        if (field.options.type === 'BOOLEAN') t = table.boolean(field.name);
-        if (field.options.type === 'INTEGER') t = table.integer(field.name);
-        if (field.options.type === 'FLOAT') t = table.float(field.name);
-        if (field.options.type === 'DATE') t = table.datetime(field.name);
-        if (field.options.type === 'CREATED_AT') t = table.datetime(field.name);
-        if (field.options.type === 'UPDATED_AT') t = table.datetime(field.name);
-        if (field.options.type === 'IP') t = table.string(field.name);
-        if (field.options.nullable) t?.nullable(); else t?.notNullable()
-        if (field.options.unique) t?.unique();
     }
 }

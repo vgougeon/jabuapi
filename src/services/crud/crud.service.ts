@@ -109,6 +109,27 @@ export class CrudService {
         }
     }
 
+    update(collectionName: string) {
+        return async (req: Request, res: Response) => {
+            const { mapped, error } = await this.mapBody({ ...req.body, ...req.files || {} }, collectionName, 'update', { req, res })
+            if (error.errorsFound()) return res.status(400).send(error.getMap())
+            try {
+                const id = await this.api.db.userDb?.(collectionName).update({ ...mapped }).where({ id: req.params.id })
+                if (id) {
+                    const item = await this.api.db.userDb?.(collectionName).where({ id: id }).first()
+                    return res.send(item)
+                }
+                else {
+                    return res.status(400).send('Unknown error')
+                }
+            }
+            catch (err: any) {
+                console.log("ERROR", err.sqlMessage)
+                return res.status(500).send(err.sqlMessage)
+            }
+        }
+    }
+
     async saveMedia(media: UploadedFile) {
         const path = `${this.api.options.root}/medias/${media.name}`
         return new Promise((resolve, reject) => {

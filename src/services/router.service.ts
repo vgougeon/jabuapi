@@ -25,6 +25,7 @@ export class RouterService {
             this.router.get(`/${collection.name}`, this.api.crudService.findAll(collection.name))
             this.router.get(`/${collection.name}/:id`, this.api.crudService.findOne(collection.name))
             this.router.post(`/${collection.name}`, this.api.crudService.insert(collection.name))
+            this.router.put(`/${collection.name}/:id`, this.api.crudService.update(collection.name))
         }
 
         const authCollection = collections.find(c => !!c.options.config?.auth?.identifier)
