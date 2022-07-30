@@ -1,0 +1,224 @@
+[
+	{
+		"id": "1659217886046e4gZHXPyM_pW4C6k_AWIS",
+		"name": "CREATE_TABLE",
+		"args": [
+			"lesson"
+		]
+	},
+	{
+		"id": "1659217886048B6wmIJaJoI5h_MnueyyY0",
+		"name": "CREATE_FIELD",
+		"args": [
+			"lesson",
+			{
+				"name": "id",
+				"options": {
+					"type": "ID"
+				}
+			}
+		]
+	},
+	{
+		"id": "1659217886049ozBELwNqS0AjPC295CpqQ",
+		"name": "CREATE_FIELD",
+		"args": [
+			"lesson",
+			{
+				"name": "createdAt",
+				"options": {
+					"type": "CREATED_AT"
+				}
+			}
+		]
+	},
+	{
+		"id": "16592179442465NCUom6avFBN5wnhYgH6G",
+		"name": "RENAME_TABLE",
+		"args": [
+			{
+				"name": "music",
+				"newName": "song"
+			}
+		]
+	},
+	{
+		"id": "1659218194444IdkLy9UidqhcuUBPMNSgS",
+		"name": "RENAME_TABLE",
+		"args": [
+			{
+				"name": "song",
+				"newName": "music"
+			}
+		]
+	},
+	{
+		"id": "1659218266713NH6fjDa0YEPKh4UrcRump",
+		"name": "RENAME_TABLE",
+		"args": [
+			{
+				"name": "music",
+				"newName": "theme"
+			}
+		]
+	},
+	{
+		"id": "1659218326183tlkUNOC3ernKNFAaaTLxy",
+		"name": "DELETE_TABLE",
+		"args": [
+			"video"
+		]
+	},
+	{
+		"id": "1659218820528aBX5cKrFwAcmVaKJh-QnI",
+		"name": "CREATE_FIELD",
+		"args": [
+			"lesson",
+			"createdAt"
+		]
+	},
+	{
+		"id": "1659220431625iQWtEGW8gUNfiKffkMWNq",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "author",
+				"options": {
+					"type": "ASYMMETRIC",
+					"nullable": false,
+					"unique": false,
+					"fieldName": "author",
+					"leftTable": "user",
+					"rightTable": "exercise",
+					"rightReference": "id"
+				}
+			}
+		]
+	},
+	{
+		"id": "1659220912206d5byrTinXBQnbxlr57aI8",
+		"name": "DELETE_RELATION",
+		"args": [
+			{
+				"name": "author",
+				"options": {
+					"type": "ASYMMETRIC",
+					"nullable": false,
+					"unique": false,
+					"fieldName": "author",
+					"leftTable": "user",
+					"rightTable": "exercise",
+					"rightReference": "id"
+				}
+			}
+		]
+	},
+	{
+		"id": "1659221203679jTfgefMKFIAZJNG4T3VUR",
+		"name": "DELETE_RELATION",
+		"args": [
+			{
+				"name": "author",
+				"options": {
+					"type": "ASYMMETRIC",
+					"nullable": false,
+					"unique": false,
+					"fieldName": "author",
+					"leftTable": "user",
+					"rightTable": "exercise",
+					"rightReference": "id"
+				}
+			}
+		]
+	},
+	{
+		"id": "1659221247498QtY3VGLFSmFKfgwvFTIrp",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "author",
+				"options": {
+					"type": "ASYMMETRIC",
+					"nullable": false,
+					"unique": false,
+					"fieldName": "author",
+					"leftTable": "user",
+					"rightTable": "exercise",
+					"rightReference": "id"
+				}
+			}
+		]
+	},
+	{
+		"id": "1659221359823_V9X-_vr2a8MNlL5EQQe0",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "author",
+				"options": {
+					"type": "ASYMMETRIC",
+					"nullable": false,
+					"unique": false,
+					"fieldName": "author",
+					"leftTable": "user",
+					"rightTable": "exercise",
+					"rightReference": "id"
+				}
+			}
+		]
+	},
+	{
+		"id": "1659221469876T548GorG67YNP24O6i1Pk",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "author",
+				"options": {
+					"type": "ASYMMETRIC",
+					"nullable": false,
+					"unique": false,
+					"fieldName": "author",
+					"leftTable": "user",
+					"rightTable": "item",
+					"rightReference": "id"
+				}
+			}
+		]
+	},
+	{
+		"id": "1659221752452sKNWIqMB0DstdaUjuyfSc",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "author",
+				"options": {
+					"type": "ASYMMETRIC",
+					"nullable": false,
+					"unique": false,
+					"fieldName": "author",
+					"leftTable": "user",
+					"rightTable": "item",
+					"rightReference": "id"
+				}
+			}
+		]
+	},
+	{
+		"id": "1659221880632BzryCaXfXmc9mGwuPfzkC",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "name",
+				"options": {
+					"type": "ASYMMETRIC",
+					"nullable": false,
+					"unique": false,
+					"fieldName": "author",
+					"leftTable": "user",
+					"rightTable": "user",
+					"rightReference": "id"
+				}
+			}
+		]
+	}
+]

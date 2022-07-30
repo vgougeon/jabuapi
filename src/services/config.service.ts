@@ -26,6 +26,10 @@ export class ConfigService {
         .map(([name, options]) => ({ name, options }))
     }
 
+    getRelationByName(relationName: string) {
+        return this.app.relations[relationName] || {}
+    }
+
     getCollectionByName(collectionName: string) {
         return this.app.collections[collectionName] || {}
     }

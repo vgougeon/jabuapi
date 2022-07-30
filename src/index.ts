@@ -1,3 +1,4 @@
+import { Fields } from './fields/field.singleton';
 import cors from "cors";
 import express, { Application } from "express";
 import fileUpload from "express-fileupload";
@@ -13,6 +14,8 @@ import { JsonService } from "./services/json.service";
 import { RouterService } from "./services/router.service";
 import { SQL } from "./services/routers/sql";
 import CollectionRouter from "./services/routers/collections";
+import Actions from './services/actions/actions';
+import RelationRouter from './services/routers/relations';
 
 export interface APIOptions {
     /** Your express application goes here. */
@@ -31,8 +34,11 @@ export default class API {
     routerService: RouterService;
     crudService: CrudService;
     authService: AuthService;
+    fields: Fields;
+    actions: Actions;
     db: Databases;
     SQL: SQL;
+    status = 'online'
 
     constructor(public options: APIOptions) {
         this.app = options.app
@@ -44,6 +50,8 @@ export default class API {
         this.crudService = new CrudService(this)
         this.authService = new AuthService(this)
         this.db = new Databases(this)
+        this.fields = new Fields(this)
+        this.actions = new Actions(this)
         this.SQL = new SQL(this)
     }
 
@@ -68,11 +76,12 @@ export default class API {
             exposedHeaders: ['authorization']
         }))
 
-        app.post('/core-api/login', this.authService.coreLogin())
+        app.post('/core-api/loFieldsin', this.authService.coreLogin())
         app.get('/core-api/me', this.authService.coreMe())
         app.use('/core-api/setup', createSetupRoutes(this))
         app.use('/core-api/status', StatusRoutes(this))
         app.use('/core-api/collections', CollectionRouter(this))
+        app.use('/core-api/relations', RelationRouter(this))
 
         await this.initUserApi()
 

@@ -1,4 +1,3 @@
-import { FieldSingleton } from "../fields/field.singleton";
 import API from "../index";
 import { IApp } from "../types/app.interface";
 export class AppService {
@@ -6,6 +5,7 @@ export class AppService {
     constructor(private api: API) {}
 
     async initDb() {
+        this.api.status = 'setup'
         const config: IApp = await this.api.jsonService.getOrCreate('app.json')
         if (!config) return false;
 
@@ -26,35 +26,19 @@ export class AppService {
                 const fields = Object.entries(collection.options.fields)
                     .map(([name, options]) => ({ name, options: options }))
                 await this.api.db.userDb.schema.createTable(collection.name, (table) => {
-                    for (let field of fields) {
-                        FieldSingleton.get(field.options.type)?.createField(table, field)
-                    }
+                    table.timestamp('__jabuapi__')
                 })
+                for (let field of fields) {
+                    this.api.fields.get(field.options.type)?.createField(collection.name, field)
+                }
             }
 
             for (let relation of relations) {
-                if (relation.options.type === 'MANY TO MANY') {
-                    await this.api.db.userDb.schema.createTable(relation.name, (table) => {
-                        table.integer(`${relation.options.leftTable}_${relation.options.leftReference}`).unsigned().notNullable()
-                        table.foreign(`${relation.options.leftTable}_${relation.options.leftReference}`)
-                        .references(relation.options.leftReference).inTable(relation.options.leftTable)
-                        table.integer(`${relation.options.rightTable}_${relation.options.rightReference}`).unsigned().notNullable()
-                        table.foreign(`${relation.options.rightTable}_${relation.options.rightReference}`)
-                        .references(relation.options.rightReference).inTable(relation.options.rightTable)
-                    })
-                }
-
-                if (relation.options.type === 'ASYMMETRIC') {
-                    await this.api.db.userDb.schema.alterTable(relation.options.leftTable, (table) => {
-                        table.integer(relation.options.fieldName).unsigned()
-                        table.foreign(relation.options.fieldName)
-                        .references(relation.options.rightReference).inTable(relation.options.rightTable)
-                    })
-                }
+                await this.api.fields.get(relation.options.type)?.createRelation(relation)
             }
 
             await this.api.db.userDb.raw('SET FOREIGN_KEY_CHECKS = 1;')
-
+            this.api.status = 'online'
         }
         return true
     }

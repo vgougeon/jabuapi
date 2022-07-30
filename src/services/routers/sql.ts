@@ -1,7 +1,8 @@
 import { ICollection, IField, IRelation } from "../../types/app.interface"
 import fs from 'fs/promises'
 import API from "../../index"
-import { FieldSingleton } from "../../fields/field.singleton"
+import { EAction } from "../actions/action.enum"
+import { toNameOptions } from "../../utils/utils"
 
 export class SQL {
     constructor(private API: API) { }
@@ -25,23 +26,35 @@ export class SQL {
         }
     }
 
-    createCollection(collection: { [name: string]: ICollection }) {
+    async createCollection(collection: { [name: string]: ICollection }) {
         const name = Object.keys(collection)[0]
         const fields = Object.entries(collection[name].fields).map(([name, options]) => ({ name, options }))
-        const creating = this.API.db.userDb?.schema.createTable(name, (table) => {
-            for (let field of fields) {
-                FieldSingleton.get(field.options.type)?.createField(table, field)
-            }
+        await this.API.db.userDb?.schema.createTable(name, (table) => {
+            table.timestamp('__jabuapi__')
         })
-        this.appendSQL(creating!.toString(), creating!)
+        this.API.actions.create(EAction.CreateTable, toNameOptions<ICollection>(collection).name)
+        for (let field of fields) {
+            if(this.API.db.userDb) {
+                this.API.fields.get(field.options.type)?.createField(name, field)
+            }
+        }
+    }
+
+    async deleteCollection(name: string) {
+        await this.API.db.userDb?.schema.dropTableIfExists(name)
+        this.API.actions.create(EAction.DeleteTable, name)
+    }
+
+    async renameCollection(name: string, newName: string) {
+        await this.API.db.userDb?.schema.renameTable(name, newName)
+        this.API.actions.create(EAction.RenameTable, { name, newName })
     }
 
     addField(collection: string, body: { [key: string]: IField }): any {
         const field = Object.entries(body).map(([name, options]) => ({ name, options }))[0]
-        const adding = this.API.db.userDb?.schema.alterTable(collection, (table) => {
-            FieldSingleton.get(field.options.type)?.createField(table, field)
-        })
-        this.appendSQL(adding!.toString(), adding!)
+        if(this.API.db.userDb) {
+            this.API.fields.get(field.options.type)?.createField(collection, field)
+        }
     }
 
     editField(collection: string, field: string, body: { [key: string]: IField }) {

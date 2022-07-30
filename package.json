@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/vgougeon/jabuapi#readme",
   "dependencies": {
+    "@ungap/structured-clone": "^1.0.1",
     "bcrypt": "^5.0.1",
     "better-sqlite3": "^7.5.0",
     "change-case": "^4.1.2",

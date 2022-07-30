@@ -1,5 +1,4 @@
-import { Knex } from "knex";
-import { IField } from "../types/app.interface";
+import API from "..";
 import { Field } from "./field.class";
 import { FieldBoolean } from "./normal/boolean";
 import { FieldCreatedAt } from "./normal/createdAt";
@@ -15,27 +14,34 @@ import { FieldRichText } from "./normal/richText";
 import { FieldString } from "./normal/string";
 import { FieldText } from "./normal/text";
 import { FieldUpdatedAt } from "./normal/updatedAt";
+import { RelationAsymmetric } from "./relations/asymmetric";
+import { RelationManyToMany } from "./relations/manytomany";
 
-export abstract class FieldSingleton {
-    static fields: Field[] = [
-        new FieldId(), 
-        new FieldBoolean(), 
-        new FieldCreatedAt(), 
-        new FieldDate(),
-        new FieldEmail(),
-        new FieldFloat(),
-        new FieldInteger(),
-        new FieldIP(),
-        new FieldJSON(),
-        new FieldPassword(),
-        new FieldRichText(),
-        new FieldString(),
-        new FieldText(),
-        new FieldUpdatedAt(),
+export class Fields {
+
+    constructor(private api: API) {}
+
+    fields: Field[] = [
+        new FieldId(this.api), 
+        new FieldBoolean(this.api), 
+        new FieldCreatedAt(this.api), 
+        new FieldDate(this.api),
+        new FieldEmail(this.api),
+        new FieldFloat(this.api),
+        new FieldInteger(this.api),
+        new FieldIP(this.api),
+        new FieldJSON(this.api),
+        new FieldPassword(this.api),
+        new FieldRichText(this.api),
+        new FieldString(this.api),
+        new FieldText(this.api),
+        new FieldUpdatedAt(this.api),
+        new RelationAsymmetric(this.api),
+        new RelationManyToMany(this.api)
     ]
 
-    static get(name: string) {
-        const c = FieldSingleton.fields.find(f => f.name === name)
+    get(name: string) {
+        const c = this.fields.find(f => f.name === name)
         console.log("Getting type " + name)
         if(!c) console.error('No field class found with name : ' + name)
         return c
