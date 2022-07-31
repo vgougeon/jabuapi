@@ -1,6 +1,7 @@
 import API from "../index";
 import { IApp } from "../types/app.interface";
 import { IConfig } from "../types/config.interface";
+import fs from 'fs/promises';
 
 export class ConfigService {
     app!: IApp;
@@ -32,5 +33,11 @@ export class ConfigService {
 
     getCollectionByName(collectionName: string) {
         return this.app.collections[collectionName] || {}
+    }
+
+    setApp(app: IApp) {
+        return fs.writeFile(this.api.options.root + '/app.json', JSON.stringify(app, null, '\t'))
+        .then(() => this.app = app)
+        .then(() => this.api.routerService.resetRoutes())
     }
 }

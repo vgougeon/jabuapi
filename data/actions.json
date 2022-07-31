@@ -1,16 +1,16 @@
 [
 	{
-		"id": "1659217886046e4gZHXPyM_pW4C6k_AWIS",
+		"id": "1659260009441kN2vlN78W9rIUqMcW0zQt",
 		"name": "CREATE_TABLE",
 		"args": [
-			"lesson"
+			"pokemon"
 		]
 	},
 	{
-		"id": "1659217886048B6wmIJaJoI5h_MnueyyY0",
+		"id": "1659260009442h14fZsZq5zP5P4z-p43Na",
 		"name": "CREATE_FIELD",
 		"args": [
-			"lesson",
+			"pokemon",
 			{
 				"name": "id",
 				"options": {
@@ -20,10 +20,10 @@
 		]
 	},
 	{
-		"id": "1659217886049ozBELwNqS0AjPC295CpqQ",
+		"id": "16592600094430DZQHn4kMLymPgTK6SlJq",
 		"name": "CREATE_FIELD",
 		"args": [
-			"lesson",
+			"pokemon",
 			{
 				"name": "createdAt",
 				"options": {
@@ -33,189 +33,89 @@
 		]
 	},
 	{
-		"id": "16592179442465NCUom6avFBN5wnhYgH6G",
-		"name": "RENAME_TABLE",
+		"id": "1659260011535R3b4qi6KzfxJJHPg-tW-S",
+		"name": "CREATE_TABLE",
 		"args": [
-			{
-				"name": "music",
-				"newName": "song"
-			}
+			"trainer"
 		]
 	},
 	{
-		"id": "1659218194444IdkLy9UidqhcuUBPMNSgS",
-		"name": "RENAME_TABLE",
-		"args": [
-			{
-				"name": "song",
-				"newName": "music"
-			}
-		]
-	},
-	{
-		"id": "1659218266713NH6fjDa0YEPKh4UrcRump",
-		"name": "RENAME_TABLE",
-		"args": [
-			{
-				"name": "music",
-				"newName": "theme"
-			}
-		]
-	},
-	{
-		"id": "1659218326183tlkUNOC3ernKNFAaaTLxy",
-		"name": "DELETE_TABLE",
-		"args": [
-			"video"
-		]
-	},
-	{
-		"id": "1659218820528aBX5cKrFwAcmVaKJh-QnI",
+		"id": "1659260011536BfdMzsN9zdOhTOR1-J_ng",
 		"name": "CREATE_FIELD",
 		"args": [
-			"lesson",
+			"trainer",
+			{
+				"name": "id",
+				"options": {
+					"type": "ID"
+				}
+			}
+		]
+	},
+	{
+		"id": "1659260011536mxsquQHpVDaZEkNtIEJ1n",
+		"name": "CREATE_FIELD",
+		"args": [
+			"trainer",
+			{
+				"name": "createdAt",
+				"options": {
+					"type": "CREATED_AT"
+				}
+			}
+		]
+	},
+	{
+		"id": "1659260016086RWrt7U7ZvpwIfuon7ySEP",
+		"name": "CREATE_FIELD",
+		"args": [
+			"pokemon",
+			{
+				"name": "name",
+				"options": {
+					"type": "STRING",
+					"nullable": false,
+					"unique": false
+				}
+			}
+		]
+	},
+	{
+		"id": "1659260023472OsY9UK82OqFcJv2ix_vPK",
+		"name": "DELETE_FIELD",
+		"args": [
+			"trainer",
 			"createdAt"
 		]
 	},
 	{
-		"id": "1659220431625iQWtEGW8gUNfiKffkMWNq",
-		"name": "CREATE_RELATION",
+		"id": "1659260141258NjgBeaWzswcseT0FoioDy",
+		"name": "CREATE_FIELD",
 		"args": [
-			{
-				"name": "author",
-				"options": {
-					"type": "ASYMMETRIC",
-					"nullable": false,
-					"unique": false,
-					"fieldName": "author",
-					"leftTable": "user",
-					"rightTable": "exercise",
-					"rightReference": "id"
-				}
-			}
-		]
-	},
-	{
-		"id": "1659220912206d5byrTinXBQnbxlr57aI8",
-		"name": "DELETE_RELATION",
-		"args": [
-			{
-				"name": "author",
-				"options": {
-					"type": "ASYMMETRIC",
-					"nullable": false,
-					"unique": false,
-					"fieldName": "author",
-					"leftTable": "user",
-					"rightTable": "exercise",
-					"rightReference": "id"
-				}
-			}
-		]
-	},
-	{
-		"id": "1659221203679jTfgefMKFIAZJNG4T3VUR",
-		"name": "DELETE_RELATION",
-		"args": [
-			{
-				"name": "author",
-				"options": {
-					"type": "ASYMMETRIC",
-					"nullable": false,
-					"unique": false,
-					"fieldName": "author",
-					"leftTable": "user",
-					"rightTable": "exercise",
-					"rightReference": "id"
-				}
-			}
-		]
-	},
-	{
-		"id": "1659221247498QtY3VGLFSmFKfgwvFTIrp",
-		"name": "CREATE_RELATION",
-		"args": [
-			{
-				"name": "author",
-				"options": {
-					"type": "ASYMMETRIC",
-					"nullable": false,
-					"unique": false,
-					"fieldName": "author",
-					"leftTable": "user",
-					"rightTable": "exercise",
-					"rightReference": "id"
-				}
-			}
-		]
-	},
-	{
-		"id": "1659221359823_V9X-_vr2a8MNlL5EQQe0",
-		"name": "CREATE_RELATION",
-		"args": [
-			{
-				"name": "author",
-				"options": {
-					"type": "ASYMMETRIC",
-					"nullable": false,
-					"unique": false,
-					"fieldName": "author",
-					"leftTable": "user",
-					"rightTable": "exercise",
-					"rightReference": "id"
-				}
-			}
-		]
-	},
-	{
-		"id": "1659221469876T548GorG67YNP24O6i1Pk",
-		"name": "CREATE_RELATION",
-		"args": [
-			{
-				"name": "author",
-				"options": {
-					"type": "ASYMMETRIC",
-					"nullable": false,
-					"unique": false,
-					"fieldName": "author",
-					"leftTable": "user",
-					"rightTable": "item",
-					"rightReference": "id"
-				}
-			}
-		]
-	},
-	{
-		"id": "1659221752452sKNWIqMB0DstdaUjuyfSc",
-		"name": "CREATE_RELATION",
-		"args": [
-			{
-				"name": "author",
-				"options": {
-					"type": "ASYMMETRIC",
-					"nullable": false,
-					"unique": false,
-					"fieldName": "author",
-					"leftTable": "user",
-					"rightTable": "item",
-					"rightReference": "id"
-				}
-			}
-		]
-	},
-	{
-		"id": "1659221880632BzryCaXfXmc9mGwuPfzkC",
-		"name": "CREATE_RELATION",
-		"args": [
+			"trainer",
 			{
 				"name": "name",
 				"options": {
+					"type": "STRING",
+					"nullable": false,
+					"unique": false
+				}
+			}
+		]
+	},
+	{
+		"id": "16592601556344vEjEj6qqFxFOa5Fmh5xT",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "pokemonTrainer",
+				"options": {
 					"type": "ASYMMETRIC",
 					"nullable": false,
 					"unique": false,
-					"fieldName": "author",
-					"leftTable": "user",
-					"rightTable": "user",
+					"fieldName": "trainer",
+					"leftTable": "pokemon",
+					"rightTable": "trainer",
 					"rightReference": "id"
 				}
 			}

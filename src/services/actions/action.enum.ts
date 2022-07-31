@@ -9,5 +9,5 @@ export enum EAction {
 
     CreateRelation = "CREATE_RELATION", //OK
     EditRelation = "EDIT_RELATION",
-    DeleteRelation = "DELETE_RELATION",
+    DeleteRelation = "DELETE_RELATION", //OK
 }

@@ -16,7 +16,7 @@ export class FieldPassword extends Field {
 
     async deleteField(table: string, name: string) {
         super.deleteField(table, name)
-        const del = this.api.db.userDb?.schema.alterTable(table, (table) => {
+        await this.api.db.userDb?.schema.alterTable(table, (table) => {
             table.dropColumn(name)
         })
     }

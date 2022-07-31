@@ -38,7 +38,7 @@ export default function CollectionRouter(API: API) {
                 }
                 return f
             })
-            .then(async f => (await fs.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+            .then(async f => (await API.configService.setApp(f), f))
             .then(f => (res.send(f), f))
             .then(f => API.SQL.createCollection({ [req.body.name]: f.collections[req.body.name] }))
             .catch(err => {
@@ -57,7 +57,7 @@ export default function CollectionRouter(API: API) {
                 delete f.collections[req.params.collection]
                 return f
             })
-            .then(f => (fs.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+            .then(f => (API.configService.setApp(f), f))
             .then(f => res.send(f))
             .then(f => API.SQL.deleteCollection(req.params.collection))
             .catch(err => {
@@ -80,7 +80,7 @@ export default function CollectionRouter(API: API) {
                 //TODO: make sure collection has no relations
                 return f
             })
-            .then(f => (fs.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+            .then(f => (API.configService.setApp(f), f))
             .then(f => res.send(f))
             .then(() => API.SQL.renameCollection(name, newName))
     })
@@ -94,7 +94,7 @@ export default function CollectionRouter(API: API) {
                     f.relations = { ...f.relations, ...req.body }
                     return f
                 })
-                .then(f => (fs.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+                .then(f => (API.configService.setApp(f), f))
                 .then(f => res.send(f))
                 .then(() => {
                     API.fields.get(added.type)?.createRelation(toNameOptions<IRelation>(req.body))
@@ -108,7 +108,7 @@ export default function CollectionRouter(API: API) {
                     f.collections[req.params.collection].fields = { ...f.collections[req.params.collection].fields, ...req.body }
                     return f
                 })
-                .then(f => (fs.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+                .then(f => (API.configService.setApp(f), f))
                 .then(f => res.send(f))
                 // .then(() => API.SQL.addField(req.params.collection, req.body))
                 .then(() => API.fields.get(added.type)?.createField(req.params.collection, toNameOptions<IField>(req.body)))
@@ -129,7 +129,7 @@ export default function CollectionRouter(API: API) {
                 f.collections[req.params.collection] = { ...f.collections[req.params.collection], ...req.body }
                 return f
             })
-            .then(f => (fs.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+            .then(f => (API.configService.setApp(f), f))
             .then(f => res.send(f))
             .catch(err => {
                 if (err.syscall === 'open') res.status(200).send("NO DATA")
@@ -149,7 +149,7 @@ export default function CollectionRouter(API: API) {
                 f.collections[req.params.collection].config = { ...f.collections[req.params.collection].config, ...req.body }
                 return f
             })
-            .then(f => (fs.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+            .then(f => (API.configService.setApp(f), f))
             .then(f => res.send(f))
             .catch(err => {
                 if (err.syscall === 'open') res.status(200).send("NO DATA")
@@ -169,7 +169,7 @@ export default function CollectionRouter(API: API) {
                 f.collections[req.params.collection].fields = { ...f.collections[req.params.collection].fields, ...req.body }
                 return f
             })
-            .then(async f => (await fs.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+            .then(async f => (await API.configService.setApp(f), f))
             .then(f => (res.send(f), f))
             .then(f => API.SQL.editField(req.params.collection, req.params.field, req.body))
             .catch(err => {
@@ -188,7 +188,7 @@ export default function CollectionRouter(API: API) {
                     delete f.relations[req.params.field]
                     return f
                 })
-                .then(f => (fs.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+                .then(f => (API.configService.setApp(f), f))
                 .then(f => (res.send(f), f))
                 .then(f => {
                     API.fields.get(type)?.deleteRelation(req.body)
@@ -202,7 +202,7 @@ export default function CollectionRouter(API: API) {
                     delete f.collections[req.params.collection].fields[req.params.field]
                     return f
                 })
-                .then(f => (fs.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+                .then(f => (API.configService.setApp(f), f))
                 .then(f => res.send(f))
                 // .then(() => API.SQL.removeField(req.params.collection, req.params.field))
                 .then(() => {

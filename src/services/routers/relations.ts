@@ -10,13 +10,12 @@ export default function RelationRouter(API: API) {
         console.log(name)
         const relation = API.configService.getRelationByName(name)
         let config = API.configService.app
-        // relation is undefined... BECAUSE I HAVE TO REFRESH APP.JSON
         API.fields.get(relation.type)?.deleteRelation({
             name: req.params.relation,
             options: relation
         })
         delete config.relations[name]
-        fs.writeFile(API.options.root + '/app.json', JSON.stringify(config, null, '\t'))
+        API.configService.setApp(config)
         .then(() => res.send(config))
     })
 
