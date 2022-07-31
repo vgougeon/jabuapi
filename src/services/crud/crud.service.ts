@@ -77,6 +77,21 @@ export class CrudService {
         }
     }
 
+    getRelationsManyToMany(relation: { name: string; options: IRelation }, side: 'LEFT' | 'RIGHT') {
+        return async (req: Request, res: Response) => {
+            let table = side === 'LEFT' ? relation.options.leftTable : relation.options.rightTable
+            let target = side === 'RIGHT' ? relation.options.leftTable : relation.options.rightTable
+            let reference = side === 'LEFT' ? relation.options.leftReference : relation.options.rightReference
+            
+            let request = this.api.db.userDb?.(relation.name)
+            .where(`${table}_id`, +req.params.id)
+            .join(target, `${relation.name}.${target}_id`, `${target}.${reference}`)
+            .select(this.selectFields(target))
+            console.log(request?.toSQL())
+            return res.send(await request)
+        }
+    }
+
     findOne(collectionName: string) {
         return async (req: Request, res: Response) => {
             const relations = this.api.configService.getAllRelations(collectionName)

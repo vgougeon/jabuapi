@@ -6,7 +6,7 @@ export class RouterService {
     app!: Application;
     router = Router();
 
-    constructor(private api: API) {}
+    constructor(private api: API) { }
 
     async resetRoutes() {
         console.log("Regenerating routes")
@@ -28,12 +28,21 @@ export class RouterService {
             this.router.post(`/${collection.name}`, this.api.crudService.insert(collection.name))
             this.router.put(`/${collection.name}/:id`, this.api.crudService.update(collection.name))
         }
-        
-        for(let relation of relations) {
-            if(relation.options.type === 'ASYMMETRIC') {
+
+        for (let relation of relations) {
+            if (relation.options.type === 'ASYMMETRIC') {
                 console.log(`/${relation.options.rightTable}/:id/${relation.options.fieldName}`)
                 this.router.get(`/${relation.options.rightTable}/:id/${relation.options.fieldName}`,
-                this.api.crudService.getRelationsAsymmetric(relation))
+                    this.api.crudService.getRelationsAsymmetric(relation))
+            }
+
+            if (relation.options.type === 'MANY TO MANY') {
+                console.log(`/${relation.options.rightTable}/:id/${relation.name}`)
+                console.log(`/${relation.options.leftTable}/:id/${relation.name}`)
+                this.router.get(`/${relation.options.rightTable}/:id/${relation.name}`,
+                    this.api.crudService.getRelationsManyToMany(relation, 'RIGHT'))
+                this.router.get(`/${relation.options.leftTable}/:id/${relation.name}`,
+                    this.api.crudService.getRelationsManyToMany(relation, 'LEFT'))
             }
         }
 

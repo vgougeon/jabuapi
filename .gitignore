@@ -2,6 +2,7 @@ node_modules
 index.ts
 app.json
 settings.json
+actions.json
 medias
 transactions.sql
 nodemon.json

@@ -127,5 +127,23 @@
 				}
 			}
 		]
+	},
+	{
+		"id": "1659274981936PJDSo9JfyvfsdpDM65gNa",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "favorite",
+				"options": {
+					"type": "MANY TO MANY",
+					"nullable": false,
+					"unique": false,
+					"leftReference": "id",
+					"leftTable": "user",
+					"rightTable": "music",
+					"rightReference": "id"
+				}
+			}
+		]
 	}
 ]
