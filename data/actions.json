@@ -1,16 +1,16 @@
 [
 	{
-		"id": "1659260009441kN2vlN78W9rIUqMcW0zQt",
+		"id": "1659274467078viKbh6wjsZQoD5VFwZY51",
 		"name": "CREATE_TABLE",
 		"args": [
-			"pokemon"
+			"user"
 		]
 	},
 	{
-		"id": "1659260009442h14fZsZq5zP5P4z-p43Na",
+		"id": "1659274467080QgT2dv-wGu1e5dgGSdDxY",
 		"name": "CREATE_FIELD",
 		"args": [
-			"pokemon",
+			"user",
 			{
 				"name": "id",
 				"options": {
@@ -20,10 +20,10 @@
 		]
 	},
 	{
-		"id": "16592600094430DZQHn4kMLymPgTK6SlJq",
+		"id": "1659274467083QoRFaNIFrQ54Jf4fMaSId",
 		"name": "CREATE_FIELD",
 		"args": [
-			"pokemon",
+			"user",
 			{
 				"name": "createdAt",
 				"options": {
@@ -33,17 +33,17 @@
 		]
 	},
 	{
-		"id": "1659260011535R3b4qi6KzfxJJHPg-tW-S",
+		"id": "1659274470742MK1gLLBFgT5GXJ4GAVZBV",
 		"name": "CREATE_TABLE",
 		"args": [
-			"trainer"
+			"music"
 		]
 	},
 	{
-		"id": "1659260011536BfdMzsN9zdOhTOR1-J_ng",
+		"id": "1659274470744paSe7ZZzM2bYlsc38--yX",
 		"name": "CREATE_FIELD",
 		"args": [
-			"trainer",
+			"music",
 			{
 				"name": "id",
 				"options": {
@@ -53,10 +53,10 @@
 		]
 	},
 	{
-		"id": "1659260011536mxsquQHpVDaZEkNtIEJ1n",
+		"id": "1659274470745IH6aIZ64mH02-UrfWaGsT",
 		"name": "CREATE_FIELD",
 		"args": [
-			"trainer",
+			"music",
 			{
 				"name": "createdAt",
 				"options": {
@@ -66,57 +66,64 @@
 		]
 	},
 	{
-		"id": "1659260016086RWrt7U7ZvpwIfuon7ySEP",
-		"name": "CREATE_FIELD",
-		"args": [
-			"pokemon",
-			{
-				"name": "name",
-				"options": {
-					"type": "STRING",
-					"nullable": false,
-					"unique": false
-				}
-			}
-		]
-	},
-	{
-		"id": "1659260023472OsY9UK82OqFcJv2ix_vPK",
-		"name": "DELETE_FIELD",
-		"args": [
-			"trainer",
-			"createdAt"
-		]
-	},
-	{
-		"id": "1659260141258NjgBeaWzswcseT0FoioDy",
-		"name": "CREATE_FIELD",
-		"args": [
-			"trainer",
-			{
-				"name": "name",
-				"options": {
-					"type": "STRING",
-					"nullable": false,
-					"unique": false
-				}
-			}
-		]
-	},
-	{
-		"id": "16592601556344vEjEj6qqFxFOa5Fmh5xT",
+		"id": "1659274503291kbFdeHAPSPkN9pdtI2pCH",
 		"name": "CREATE_RELATION",
 		"args": [
 			{
-				"name": "pokemonTrainer",
+				"name": "composer",
 				"options": {
 					"type": "ASYMMETRIC",
 					"nullable": false,
 					"unique": false,
-					"fieldName": "trainer",
-					"leftTable": "pokemon",
-					"rightTable": "trainer",
+					"fieldName": "composer",
+					"leftTable": "music",
+					"rightTable": "user",
 					"rightReference": "id"
+				}
+			}
+		]
+	},
+	{
+		"id": "16592748100922uxiwaaHAAbIaBdyOpVEy",
+		"name": "CREATE_FIELD",
+		"args": [
+			"user",
+			{
+				"name": "name",
+				"options": {
+					"type": "STRING",
+					"nullable": false,
+					"unique": false
+				}
+			}
+		]
+	},
+	{
+		"id": "1659274810463GhZ0dS-gKThn4EGV8MvNn",
+		"name": "CREATE_FIELD",
+		"args": [
+			"user",
+			{
+				"name": "name",
+				"options": {
+					"type": "STRING",
+					"nullable": false,
+					"unique": false
+				}
+			}
+		]
+	},
+	{
+		"id": "1659274820907y6XE0fcBw3lGTOe1e7pvt",
+		"name": "CREATE_FIELD",
+		"args": [
+			"music",
+			{
+				"name": "name",
+				"options": {
+					"type": "STRING",
+					"nullable": false,
+					"unique": false
 				}
 			}
 		]

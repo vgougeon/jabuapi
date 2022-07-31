@@ -19,6 +19,7 @@ export class RouterService {
         this.router.stack = []
 
         const collections = Object.entries(config.collections).map(([name, options]) => ({ name, options }))
+        const relations = Object.entries(config.relations).map(([name, options]) => ({ name, options }))
 
         for (let collection of collections) {
             this.router.get(`/medias/:name`, this.getMedia())
@@ -26,6 +27,14 @@ export class RouterService {
             this.router.get(`/${collection.name}/:id`, this.api.crudService.findOne(collection.name))
             this.router.post(`/${collection.name}`, this.api.crudService.insert(collection.name))
             this.router.put(`/${collection.name}/:id`, this.api.crudService.update(collection.name))
+        }
+        
+        for(let relation of relations) {
+            if(relation.options.type === 'ASYMMETRIC') {
+                console.log(`/${relation.options.rightTable}/:id/${relation.options.fieldName}`)
+                this.router.get(`/${relation.options.rightTable}/:id/${relation.options.fieldName}`,
+                this.api.crudService.getRelationsAsymmetric(relation))
+            }
         }
 
         const authCollection = collections.find(c => !!c.options.config?.auth?.identifier)

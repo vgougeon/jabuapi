@@ -1,3 +1,4 @@
+import { IRelation } from './../../types/app.interface';
 import { Request, Response } from 'express';
 import collectionMapper from '../collection.mapper';
 import bcrypt from 'bcrypt';
@@ -7,7 +8,7 @@ import fileUpload, { UploadedFile } from 'express-fileupload';
 import { nanoid } from 'nanoid';
 import API from '../../index';
 export class CrudService {
-    constructor(private api: API) {}
+    constructor(private api: API) { }
 
     selectFields(collectionName: string, name = '') {
         const collection = this.api.configService.getCollectionByName(collectionName)
@@ -67,11 +68,20 @@ export class CrudService {
         }
     }
 
+    getRelationsAsymmetric(relation: { name: string; options: IRelation }) {
+        return async (req: Request, res: Response) => {
+            let request = this.api.db.userDb?.(relation.options.leftTable)
+                .select(this.selectFields(relation.options.leftTable))
+                .where(relation.options.fieldName, req.params.id)
+            return res.send(this.toJson(await request as any))
+        }
+    }
+
     findOne(collectionName: string) {
         return async (req: Request, res: Response) => {
             const relations = this.api.configService.getAllRelations(collectionName)
             let query = this.api.db.userDb?.(collectionName).where({ [collectionName + '.id']: +req.params.id })
-            .select(this.selectFields(collectionName))
+                .select(this.selectFields(collectionName))
 
             for (let relation of relations) {
                 if (relation.options.type === 'ASYMMETRIC' && relation.options.leftTable === collectionName)
