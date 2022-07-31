@@ -76,8 +76,9 @@ export default class API {
             exposedHeaders: ['authorization']
         }))
 
-        app.post('/core-api/loFieldsin', this.authService.coreLogin())
+        app.post('/core-api/login', this.authService.coreLogin())
         app.get('/core-api/me', this.authService.coreMe())
+        app.get('/core-api/routes', this.routerService.getRoutes())
         app.use('/core-api/setup', createSetupRoutes(this))
         app.use('/core-api/status', StatusRoutes(this))
         app.use('/core-api/collections', CollectionRouter(this))

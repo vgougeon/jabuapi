@@ -145,5 +145,20 @@
 				}
 			}
 		]
+	},
+	{
+		"id": "1659303623145ciX_ntiOvhb-zDtO2aI2m",
+		"name": "CREATE_FIELD",
+		"args": [
+			"user",
+			{
+				"name": "password",
+				"options": {
+					"type": "PASSWORD",
+					"nullable": false,
+					"unique": false
+				}
+			}
+		]
 	}
 ]
