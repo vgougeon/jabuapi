@@ -1,13 +1,13 @@
 [
 	{
-		"id": "1659274467078viKbh6wjsZQoD5VFwZY51",
+		"id": "165956486346244FiWcj9b0_k_PYcn_xn4",
 		"name": "CREATE_TABLE",
 		"args": [
 			"user"
 		]
 	},
 	{
-		"id": "1659274467080QgT2dv-wGu1e5dgGSdDxY",
+		"id": "1659564863463ySlRYW22gv1qAzbFfxOH7",
 		"name": "CREATE_FIELD",
 		"args": [
 			"user",
@@ -20,7 +20,7 @@
 		]
 	},
 	{
-		"id": "1659274467083QoRFaNIFrQ54Jf4fMaSId",
+		"id": "1659564863463J-vzOouduc991EaaYE8aR",
 		"name": "CREATE_FIELD",
 		"args": [
 			"user",
@@ -33,17 +33,17 @@
 		]
 	},
 	{
-		"id": "1659274470742MK1gLLBFgT5GXJ4GAVZBV",
+		"id": "1659564864713DOT3YJYM1hH8rtaE2I-WC",
 		"name": "CREATE_TABLE",
 		"args": [
-			"music"
+			"anime"
 		]
 	},
 	{
-		"id": "1659274470744paSe7ZZzM2bYlsc38--yX",
+		"id": "1659564864713QL30lgUWLupRQvc_foOia",
 		"name": "CREATE_FIELD",
 		"args": [
-			"music",
+			"anime",
 			{
 				"name": "id",
 				"options": {
@@ -53,10 +53,10 @@
 		]
 	},
 	{
-		"id": "1659274470745IH6aIZ64mH02-UrfWaGsT",
+		"id": "1659564864713EXbOvxpK71dPObFEqtTAK",
 		"name": "CREATE_FIELD",
 		"args": [
-			"music",
+			"anime",
 			{
 				"name": "createdAt",
 				"options": {
@@ -66,25 +66,40 @@
 		]
 	},
 	{
-		"id": "1659274503291kbFdeHAPSPkN9pdtI2pCH",
-		"name": "CREATE_RELATION",
+		"id": "16595648743354D96o2aBEffL2yR2Qrje7",
+		"name": "CREATE_TABLE",
 		"args": [
+			"genre"
+		]
+	},
+	{
+		"id": "1659564874336LMD_NgIQsB1IaySGR9qEQ",
+		"name": "CREATE_FIELD",
+		"args": [
+			"genre",
 			{
-				"name": "composer",
+				"name": "id",
 				"options": {
-					"type": "ASYMMETRIC",
-					"nullable": false,
-					"unique": false,
-					"fieldName": "composer",
-					"leftTable": "music",
-					"rightTable": "user",
-					"rightReference": "id"
+					"type": "ID"
 				}
 			}
 		]
 	},
 	{
-		"id": "16592748100922uxiwaaHAAbIaBdyOpVEy",
+		"id": "16595648743365uP0FRQiu-h46umL9BH44",
+		"name": "CREATE_FIELD",
+		"args": [
+			"genre",
+			{
+				"name": "createdAt",
+				"options": {
+					"type": "CREATED_AT"
+				}
+			}
+		]
+	},
+	{
+		"id": "1659564892659kujbTfJnME88G2Ipabi5C",
 		"name": "CREATE_FIELD",
 		"args": [
 			"user",
@@ -99,55 +114,7 @@
 		]
 	},
 	{
-		"id": "1659274810463GhZ0dS-gKThn4EGV8MvNn",
-		"name": "CREATE_FIELD",
-		"args": [
-			"user",
-			{
-				"name": "name",
-				"options": {
-					"type": "STRING",
-					"nullable": false,
-					"unique": false
-				}
-			}
-		]
-	},
-	{
-		"id": "1659274820907y6XE0fcBw3lGTOe1e7pvt",
-		"name": "CREATE_FIELD",
-		"args": [
-			"music",
-			{
-				"name": "name",
-				"options": {
-					"type": "STRING",
-					"nullable": false,
-					"unique": false
-				}
-			}
-		]
-	},
-	{
-		"id": "1659274981936PJDSo9JfyvfsdpDM65gNa",
-		"name": "CREATE_RELATION",
-		"args": [
-			{
-				"name": "favorite",
-				"options": {
-					"type": "MANY TO MANY",
-					"nullable": false,
-					"unique": false,
-					"leftReference": "id",
-					"leftTable": "user",
-					"rightTable": "music",
-					"rightReference": "id"
-				}
-			}
-		]
-	},
-	{
-		"id": "1659303623145ciX_ntiOvhb-zDtO2aI2m",
+		"id": "1659564898217zz-HpmZeN5dE1f_FcWE9P",
 		"name": "CREATE_FIELD",
 		"args": [
 			"user",
@@ -157,6 +124,105 @@
 					"type": "PASSWORD",
 					"nullable": false,
 					"unique": false
+				}
+			}
+		]
+	},
+	{
+		"id": "1659564906723Zp8ofFPC4pNivqqRu8jKW",
+		"name": "CREATE_FIELD",
+		"args": [
+			"anime",
+			{
+				"name": "name",
+				"options": {
+					"type": "STRING",
+					"nullable": false,
+					"unique": false
+				}
+			}
+		]
+	},
+	{
+		"id": "16595649351604bHOOPkyrx88a4CjOlpiC",
+		"name": "CREATE_FIELD",
+		"args": [
+			"anime",
+			{
+				"name": "synopsis",
+				"options": {
+					"type": "RICHTEXT",
+					"nullable": false,
+					"unique": false
+				}
+			}
+		]
+	},
+	{
+		"id": "1659564945195EyTTlDwqVmr7FzrKRb_do",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "animeGenres",
+				"options": {
+					"type": "MANY TO MANY",
+					"nullable": false,
+					"unique": false,
+					"leftReference": "id",
+					"leftTable": "anime",
+					"rightTable": "genre",
+					"rightReference": "id"
+				}
+			}
+		]
+	},
+	{
+		"id": "16595649584538M3bfDrje54V1fAK_ERy4",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "animeList",
+				"options": {
+					"type": "MANY TO MANY",
+					"nullable": false,
+					"unique": false,
+					"leftReference": "id",
+					"leftTable": "user",
+					"rightTable": "anime",
+					"rightReference": "id"
+				}
+			}
+		]
+	},
+	{
+		"id": "1659565014899WPN4LZBxb4BdDt-LblJlT",
+		"name": "CREATE_FIELD",
+		"args": [
+			"genre",
+			{
+				"name": "name",
+				"options": {
+					"type": "STRING",
+					"nullable": false,
+					"unique": false
+				}
+			}
+		]
+	},
+	{
+		"id": "1659568721662PPktU0WHWMExLF2GaaqFJ",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "animeCreatedBy",
+				"options": {
+					"type": "ASYMMETRIC",
+					"nullable": false,
+					"unique": false,
+					"fieldName": "createdBy",
+					"leftTable": "anime",
+					"rightTable": "user",
+					"rightReference": "id"
 				}
 			}
 		]

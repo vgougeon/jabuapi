@@ -20,4 +20,12 @@ export class FieldUpdatedAt extends Field {
             table.dropColumn(name)
         })
     }
+
+    async mapField(field: { name: string; options: IField }, mapped: any, error: any, context: any) {
+        super.mapField(field, mapped, error, context)
+        if(context.body[field.name]) {
+            mapped[field.name] = new Date(context.body[field.name])
+        }
+        else mapped[field.name] = new Date()
+    }
 }

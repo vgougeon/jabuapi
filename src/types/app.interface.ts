@@ -1,8 +1,7 @@
 export interface IField {
     type: 'ID' | 'STRING' | 'INTEGER' | 'FLOAT' | 'CREATED_AT' | 
     'IP' | 'UPDATED_AT' | 'DATE' | 'BOOLEAN' | 'TEXT' | 'EMAIL' |
-     'PASSWORD' | 'RICHTEXT' | 'JSON' | 'MEDIA' | 'RELATION' | 
-     'MANY TO ONE';
+     'PASSWORD' | 'RICHTEXT' | 'JSON' | 'MEDIA'
     nullable: boolean;
     unique: boolean;
     default?: string;

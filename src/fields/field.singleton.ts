@@ -9,6 +9,7 @@ import { FieldId } from "./normal/id";
 import { FieldInteger } from "./normal/integer";
 import { FieldIP } from "./normal/ip";
 import { FieldJSON } from "./normal/json";
+import { FieldMedia } from "./normal/media";
 import { FieldPassword } from "./normal/password";
 import { FieldRichText } from "./normal/richText";
 import { FieldString } from "./normal/string";
@@ -36,6 +37,7 @@ export class Fields {
         new FieldString(this.api),
         new FieldText(this.api),
         new FieldUpdatedAt(this.api),
+        new FieldMedia(this.api),
         new RelationAsymmetric(this.api),
         new RelationManyToMany(this.api)
     ]

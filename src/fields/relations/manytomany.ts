@@ -24,4 +24,8 @@ export class RelationManyToMany extends Field {
         super.deleteRelation(relation)
         return await this.api.db.userDb?.schema.dropTableIfExists(relation.name)
     }
+
+    async mapRelation(relation: { name: string; options: IRelation }, mapped: any, error: any, context: any) {
+        console.log("MAP MANY TO MANY NOT IMPLEMENTED yet")
+    }
 }

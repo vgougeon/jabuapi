@@ -21,4 +21,10 @@ export class RelationAsymmetric extends Field {
             table.dropColumn(relation.options.fieldName)  
         })
     }
+
+    async mapRelation(relation: { name: string; options: IRelation }, mapped: any, error: any, context: any) {
+        if(relation.options.leftTable === context.name) {
+            mapped[relation.options.fieldName] = context.body[relation.options.fieldName]
+        }
+    }
 }

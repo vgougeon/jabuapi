@@ -45,6 +45,7 @@ export default function createSetupRoutes(API: API) {
             }
         }, null, '\t'))
         const app = JSON.parse(await fs.readFile(API.options.root + '/settings.json', { encoding: "utf-8" }))
+        API.configService.refreshConfig()
         delete app.appPassword
         return res.send(app)
     })

@@ -1,11 +1,11 @@
-import { maxLength } from "class-validator";
+import { UploadedFile } from "express-fileupload";
 import { Knex } from "knex";
 import { IField } from "../../types/app.interface";
 import { Field } from "../field.class";
 
-export class FieldString extends Field {
-    name = 'STRING'
-    
+export class FieldMedia extends Field {
+    name = 'MEDIA'
+
     async createField(table: string, field: { name: string; options: IField; }) {
         super.createField(table, field)
         await this.api.db.userDb?.schema.alterTable(table, (builder) => {
@@ -25,8 +25,19 @@ export class FieldString extends Field {
     async mapField(field: { name: string; options: IField }, mapped: any, error: any, context: any) {
         super.mapField(field, mapped, error, context)
         if(context.body[field.name]) {
-            if (!maxLength(context.body[field.name], 255)) error.set(field.name, 'should be less than 255 characters')
-            mapped[field.name] = context.body[field.name]
+            console.log(context.body[field.name])
+            mapped[field.name] = await this.saveMedia(context.body[field.name])
         }
+    }
+
+    async saveMedia(media: UploadedFile) {
+        //TODO: Create directory automatically
+        const path = `${this.api.options.root}/medias/${media.name}`
+        return new Promise((resolve, reject) => {
+            media.mv(path, (err) => {
+                if (err) return reject(err)
+                else resolve(`/api/medias/${media.name}`)
+            })
+        })
     }
 }

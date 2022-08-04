@@ -1,3 +1,4 @@
+import { isEmail } from "class-validator";
 import { Knex } from "knex";
 import { IField } from "../../types/app.interface";
 import { Field } from "../field.class";
@@ -19,5 +20,13 @@ export class FieldEmail extends Field {
         await this.api.db.userDb?.schema.alterTable(table, (table) => {
             table.dropColumn(name)
         })
+    }
+
+    async mapField(field: { name: string; options: IField }, mapped: any, error: any, context: any) {
+        super.mapField(field, mapped, error, context)
+        if(context.body[field.name]) {
+            if (!isEmail(context.body[field.name])) error.set(field.name, 'should be an email')
+            mapped[field.name] = context.body[field.name]
+        }
     }
 }

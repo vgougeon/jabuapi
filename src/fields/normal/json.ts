@@ -20,4 +20,11 @@ export class FieldJSON extends Field {
             table.dropColumn(name)
         })
     }
+
+    async mapField(field: { name: string; options: IField }, mapped: any, error: any, context: any) {
+        super.mapField(field, mapped, error, context)
+        if(context.body[field.name]) {
+            mapped[field.name] = context.body[field.name]
+        }
+    }
 }

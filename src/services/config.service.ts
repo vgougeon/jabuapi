@@ -40,4 +40,8 @@ export class ConfigService {
         .then(() => this.app = app)
         .then(() => this.api.routerService.resetRoutes())
     }
+
+    async refreshConfig() {
+        this.config = await this.api.jsonService.get('settings.json');
+    }
 }

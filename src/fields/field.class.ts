@@ -21,4 +21,6 @@ export abstract class Field {
     deleteRelation(relation: { name: string; options: IRelation }) {
         this.api.actions.create(EAction.DeleteRelation, relation)
     }
+    async mapField(field: { name: string; options: IField }, mapped: any, error: any, context: any) {}
+    async mapRelation(relation: { name: string; options: IRelation }, mapped: any, error: any, context: any) {}
 }

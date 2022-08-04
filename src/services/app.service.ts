@@ -7,7 +7,7 @@ export class AppService {
     async initDb() {
         this.api.status = 'setup'
         const config: IApp = await this.api.jsonService.getOrCreate('app.json')
-        if (!config) return false;
+        this.api.configService.app = config
 
         const collections = Object.entries(config.collections)
             .map(([name, options]) => ({ name, options }))

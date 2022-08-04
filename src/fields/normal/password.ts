@@ -1,7 +1,7 @@
 import { Knex } from "knex";
 import { IField } from "../../types/app.interface";
 import { Field } from "../field.class";
-
+import bcrypt from 'bcrypt';
 export class FieldPassword extends Field {
     name = 'PASSWORD'
     
@@ -19,5 +19,12 @@ export class FieldPassword extends Field {
         await this.api.db.userDb?.schema.alterTable(table, (table) => {
             table.dropColumn(name)
         })
+    }
+
+    async mapField(field: { name: string; options: IField }, mapped: any, error: any, context: any) {
+        super.mapField(field, mapped, error, context)
+        if(context.body[field.name]) {
+            mapped[field.name] = bcrypt.hashSync(String(context.body[field.name]), 10);
+        }
     }
 }
