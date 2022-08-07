@@ -226,5 +226,23 @@
 				}
 			}
 		]
+	},
+	{
+		"id": "1659857618062WC4ze4Rh3gSgLldH8G5Kw",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "author",
+				"options": {
+					"type": "ASYMMETRIC",
+					"nullable": false,
+					"unique": false,
+					"fieldName": "author",
+					"leftTable": "article",
+					"rightTable": "user",
+					"rightReference": "id"
+				}
+			}
+		]
 	}
 ]

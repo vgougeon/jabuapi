@@ -11,15 +11,13 @@ export class RouterService {
     constructor(private api: API) { }
 
     async resetRoutes() {
-        console.log("Regenerating routes")
-        this.router.stack = []
-        this.routes = []
         this.generateRoutes(this.api.app)
     }
 
     async generateRoutes(app: Application) {
         const config = this.api.configService.app
         this.router.stack = []
+        this.routes = []
 
         const collections = Object.entries(config.collections).map(([name, options]) => ({ name, options }))
         const relations = Object.entries(config.relations).map(([name, options]) => ({ name, options }))
