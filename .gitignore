@@ -6,3 +6,6 @@ actions.json
 medias
 transactions.sql
 nodemon.json
+front
+data
+data/actions.json
