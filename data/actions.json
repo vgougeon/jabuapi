@@ -1,13 +1,13 @@
 [
 	{
-		"id": "165956486346244FiWcj9b0_k_PYcn_xn4",
+		"id": "1660002519974fS_YJKSSoizaYbrRPwc8l",
 		"name": "CREATE_TABLE",
 		"args": [
 			"user"
 		]
 	},
 	{
-		"id": "1659564863463ySlRYW22gv1qAzbFfxOH7",
+		"id": "1660002519976T9pp4nV6ScLmFdf60rLfv",
 		"name": "CREATE_FIELD",
 		"args": [
 			"user",
@@ -20,7 +20,7 @@
 		]
 	},
 	{
-		"id": "1659564863463J-vzOouduc991EaaYE8aR",
+		"id": "1660002519977ftj8s903_Hn8vE1ppVkDm",
 		"name": "CREATE_FIELD",
 		"args": [
 			"user",
@@ -33,17 +33,17 @@
 		]
 	},
 	{
-		"id": "1659564864713DOT3YJYM1hH8rtaE2I-WC",
+		"id": "1660002522791zVAYXGDNiSxg7CkZ13I5M",
 		"name": "CREATE_TABLE",
 		"args": [
-			"anime"
+			"character"
 		]
 	},
 	{
-		"id": "1659564864713QL30lgUWLupRQvc_foOia",
+		"id": "1660002522792o0qhS6_cGYd3YkMIS6Wxj",
 		"name": "CREATE_FIELD",
 		"args": [
-			"anime",
+			"character",
 			{
 				"name": "id",
 				"options": {
@@ -53,10 +53,10 @@
 		]
 	},
 	{
-		"id": "1659564864713EXbOvxpK71dPObFEqtTAK",
+		"id": "1660002522792EIaO9cRcXStQBStcyQT3E",
 		"name": "CREATE_FIELD",
 		"args": [
-			"anime",
+			"character",
 			{
 				"name": "createdAt",
 				"options": {
@@ -66,17 +66,17 @@
 		]
 	},
 	{
-		"id": "16595648743354D96o2aBEffL2yR2Qrje7",
+		"id": "1660002525246bA-fkBvW6LTxRkPpFNsYw",
 		"name": "CREATE_TABLE",
 		"args": [
-			"genre"
+			"fight"
 		]
 	},
 	{
-		"id": "1659564874336LMD_NgIQsB1IaySGR9qEQ",
+		"id": "16600025252479V7k9R3VolweKyPEMgO-l",
 		"name": "CREATE_FIELD",
 		"args": [
-			"genre",
+			"fight",
 			{
 				"name": "id",
 				"options": {
@@ -86,10 +86,10 @@
 		]
 	},
 	{
-		"id": "16595648743365uP0FRQiu-h46umL9BH44",
+		"id": "1660002525248BPofOmOQX5YFd-iQweG4X",
 		"name": "CREATE_FIELD",
 		"args": [
-			"genre",
+			"fight",
 			{
 				"name": "createdAt",
 				"options": {
@@ -99,12 +99,144 @@
 		]
 	},
 	{
-		"id": "1659564892659kujbTfJnME88G2Ipabi5C",
+		"id": "1660002549416dwea4uNSzOv1x0mbRvntH",
+		"name": "CREATE_TABLE",
+		"args": [
+			"item_instance"
+		]
+	},
+	{
+		"id": "1660002549417ypL67mvcsT6XutqhqLsot",
+		"name": "CREATE_FIELD",
+		"args": [
+			"item_instance",
+			{
+				"name": "id",
+				"options": {
+					"type": "ID"
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002549417C2Fnfygo4U28dhLqr5Me9",
+		"name": "CREATE_FIELD",
+		"args": [
+			"item_instance",
+			{
+				"name": "createdAt",
+				"options": {
+					"type": "CREATED_AT"
+				}
+			}
+		]
+	},
+	{
+		"id": "16600025516507wKE6-UugC-yUD46QXXkQ",
+		"name": "CREATE_TABLE",
+		"args": [
+			"item"
+		]
+	},
+	{
+		"id": "1660002551651I4SobRljulOFV-UIjZR51",
+		"name": "CREATE_FIELD",
+		"args": [
+			"item",
+			{
+				"name": "id",
+				"options": {
+					"type": "ID"
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002551651OIT26NiROWG6RTsCxXdFm",
+		"name": "CREATE_FIELD",
+		"args": [
+			"item",
+			{
+				"name": "createdAt",
+				"options": {
+					"type": "CREATED_AT"
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002563180AKFiDY9FvCGIUrhJnbUBN",
+		"name": "CREATE_TABLE",
+		"args": [
+			"pet_instance"
+		]
+	},
+	{
+		"id": "1660002563181oOOzZV0bpJHI5j5CGN7J1",
+		"name": "CREATE_FIELD",
+		"args": [
+			"pet_instance",
+			{
+				"name": "id",
+				"options": {
+					"type": "ID"
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002563182HMiozqpdii-kNXi_tFzhf",
+		"name": "CREATE_FIELD",
+		"args": [
+			"pet_instance",
+			{
+				"name": "createdAt",
+				"options": {
+					"type": "CREATED_AT"
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002565031dCEAuB82niS6NpdhAsVGW",
+		"name": "CREATE_TABLE",
+		"args": [
+			"pet"
+		]
+	},
+	{
+		"id": "1660002565032r75myn96UxRMpVzu1EUHo",
+		"name": "CREATE_FIELD",
+		"args": [
+			"pet",
+			{
+				"name": "id",
+				"options": {
+					"type": "ID"
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002565032uYMqe8eFR7UmfDhwJgXzu",
+		"name": "CREATE_FIELD",
+		"args": [
+			"pet",
+			{
+				"name": "createdAt",
+				"options": {
+					"type": "CREATED_AT"
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002578364oSu5CMqpbDgP6Y7H5o4Nn",
 		"name": "CREATE_FIELD",
 		"args": [
 			"user",
 			{
-				"name": "name",
+				"name": "username",
 				"options": {
 					"type": "STRING",
 					"nullable": false,
@@ -114,7 +246,7 @@
 		]
 	},
 	{
-		"id": "1659564898217zz-HpmZeN5dE1f_FcWE9P",
+		"id": "1660002581363z6_lDkZ-xBRYRfbd_j6i4",
 		"name": "CREATE_FIELD",
 		"args": [
 			"user",
@@ -129,10 +261,43 @@
 		]
 	},
 	{
-		"id": "1659564906723Zp8ofFPC4pNivqqRu8jKW",
+		"id": "1660002586385Clp3iabG9_V4MJ1lIxhw8",
 		"name": "CREATE_FIELD",
 		"args": [
-			"anime",
+			"user",
+			{
+				"name": "ip",
+				"options": {
+					"type": "IP",
+					"nullable": false,
+					"unique": false
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002612146I34acuvKpe-D0XmMsoPQW",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "characterOwner",
+				"options": {
+					"type": "ASYMMETRIC",
+					"nullable": false,
+					"unique": false,
+					"fieldName": "owner",
+					"leftTable": "character",
+					"rightTable": "user",
+					"rightReference": "id"
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002621981w8drkbyl1dc0ZAr4EF6IW",
+		"name": "CREATE_FIELD",
+		"args": [
+			"character",
 			{
 				"name": "name",
 				"options": {
@@ -144,14 +309,14 @@
 		]
 	},
 	{
-		"id": "16595649351604bHOOPkyrx88a4CjOlpiC",
+		"id": "1660002646770uGTHNRDz-XhaBIq1QPvcl",
 		"name": "CREATE_FIELD",
 		"args": [
-			"anime",
+			"user",
 			{
-				"name": "synopsis",
+				"name": "avatar",
 				"options": {
-					"type": "RICHTEXT",
+					"type": "MEDIA",
 					"nullable": false,
 					"unique": false
 				}
@@ -159,88 +324,196 @@
 		]
 	},
 	{
-		"id": "1659564945195EyTTlDwqVmr7FzrKRb_do",
+		"id": "1660002703730LfVvw7C1J3MAzImadlEDQ",
 		"name": "CREATE_RELATION",
 		"args": [
 			{
-				"name": "animeGenres",
+				"name": "fightInitiator",
 				"options": {
-					"type": "MANY TO MANY",
+					"type": "ASYMMETRIC",
 					"nullable": false,
 					"unique": false,
-					"leftReference": "id",
-					"leftTable": "anime",
-					"rightTable": "genre",
+					"fieldName": "initiator",
+					"leftTable": "fight",
+					"rightTable": "character",
 					"rightReference": "id"
 				}
 			}
 		]
 	},
 	{
-		"id": "16595649584538M3bfDrje54V1fAK_ERy4",
+		"id": "166000271864857y8eERw-ig6V7LDL8Bej",
 		"name": "CREATE_RELATION",
 		"args": [
 			{
-				"name": "animeList",
+				"name": "fightTarget",
 				"options": {
-					"type": "MANY TO MANY",
+					"type": "ASYMMETRIC",
 					"nullable": false,
 					"unique": false,
-					"leftReference": "id",
-					"leftTable": "user",
-					"rightTable": "anime",
+					"fieldName": "target",
+					"leftTable": "fight",
+					"rightTable": "character",
 					"rightReference": "id"
 				}
 			}
 		]
 	},
 	{
-		"id": "1659565014899WPN4LZBxb4BdDt-LblJlT",
+		"id": "1660002727979NcwyVwLX66iPPkHi_wrT5",
 		"name": "CREATE_FIELD",
 		"args": [
-			"genre",
+			"fight",
+			{
+				"name": "timeline",
+				"options": {
+					"type": "JSON",
+					"nullable": false,
+					"unique": false
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002760328Xq1KtXfZrP_T4FVhbM47-",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "fightWinner",
+				"options": {
+					"type": "ASYMMETRIC",
+					"nullable": false,
+					"unique": false,
+					"fieldName": "winner",
+					"leftTable": "fight",
+					"rightTable": "user",
+					"rightReference": "id"
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002793165seTacHUkCxfJAPXvb6wBK",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "itemInstanceItem",
+				"options": {
+					"type": "ASYMMETRIC",
+					"nullable": false,
+					"unique": false,
+					"fieldName": "item",
+					"leftTable": "item_instance",
+					"rightTable": "item",
+					"rightReference": "id"
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002812532YR5x083_ym0BtOfIwlaY-",
+		"name": "CREATE_RELATION",
+		"args": [
+			{
+				"name": "itemInstanceOwner",
+				"options": {
+					"type": "ASYMMETRIC",
+					"nullable": false,
+					"unique": false,
+					"fieldName": "owner",
+					"leftTable": "item_instance",
+					"rightTable": "character",
+					"rightReference": "id"
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002838837D4AiHEfmmLbRyXbXjQQ4g",
+		"name": "CREATE_FIELD",
+		"args": [
+			"item",
+			{
+				"name": "agility",
+				"options": {
+					"type": "INTEGER",
+					"nullable": false,
+					"unique": false
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002844311IhBlhkbBOhgWeoWnr5dnS",
+		"name": "CREATE_FIELD",
+		"args": [
+			"item",
+			{
+				"name": "strength",
+				"options": {
+					"type": "INTEGER",
+					"nullable": false,
+					"unique": false
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002849517KNFfq7wuHtZev8ZXE7o4K",
+		"name": "CREATE_FIELD",
+		"args": [
+			"item",
+			{
+				"name": "stamina",
+				"options": {
+					"type": "INTEGER",
+					"nullable": false,
+					"unique": false
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002854408mKazH1YpteK3OsCq7xwI6",
+		"name": "CREATE_FIELD",
+		"args": [
+			"item",
+			{
+				"name": "power",
+				"options": {
+					"type": "INTEGER",
+					"nullable": false,
+					"unique": false
+				}
+			}
+		]
+	},
+	{
+		"id": "1660002873987lUP4BtW-Ho_5S2MT0t3K5",
+		"name": "CREATE_FIELD",
+		"args": [
+			"item",
+			{
+				"name": "vampirism",
+				"options": {
+					"type": "INTEGER",
+					"nullable": false,
+					"unique": false
+				}
+			}
+		]
+	},
+	{
+		"id": "1660003025755CBLZeaXU1aUjo0ZBGr7hV",
+		"name": "CREATE_FIELD",
+		"args": [
+			"item",
 			{
 				"name": "name",
 				"options": {
 					"type": "STRING",
 					"nullable": false,
 					"unique": false
-				}
-			}
-		]
-	},
-	{
-		"id": "1659568721662PPktU0WHWMExLF2GaaqFJ",
-		"name": "CREATE_RELATION",
-		"args": [
-			{
-				"name": "animeCreatedBy",
-				"options": {
-					"type": "ASYMMETRIC",
-					"nullable": false,
-					"unique": false,
-					"fieldName": "createdBy",
-					"leftTable": "anime",
-					"rightTable": "user",
-					"rightReference": "id"
-				}
-			}
-		]
-	},
-	{
-		"id": "1659857618062WC4ze4Rh3gSgLldH8G5Kw",
-		"name": "CREATE_RELATION",
-		"args": [
-			{
-				"name": "author",
-				"options": {
-					"type": "ASYMMETRIC",
-					"nullable": false,
-					"unique": false,
-					"fieldName": "author",
-					"leftTable": "article",
-					"rightTable": "user",
-					"rightReference": "id"
 				}
 			}
 		]

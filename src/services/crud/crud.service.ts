@@ -83,11 +83,28 @@ export class CrudService {
             let table = side === 'LEFT' ? relation.options.leftTable : relation.options.rightTable
             let target = side === 'RIGHT' ? relation.options.leftTable : relation.options.rightTable
             let reference = side === 'LEFT' ? relation.options.leftReference : relation.options.rightReference
-            
+            let shortSide = side === 'LEFT' ? 'l' : 'r'
+            let shortOtherSide = side === 'LEFT' ? 'r' : 'l'
             let request = this.api.db.userDb?.(relation.name)
-            .where(`${table}_id`, +req.params.id)
-            .join(target, `${relation.name}.${target}_id`, `${target}.${reference}`)
-            .select(this.selectFields(target))
+                .where(`${shortSide}_${table}_id`, +req.params.id)
+                .join(target, `${relation.name}.${shortOtherSide}_${target}_id`, `${target}.${reference}`)
+                .select(this.selectFields(target))
+            if (relation.options.leftTable === relation.options.rightTable) {
+                const sideReference = side === 'LEFT' ? 'leftReference' : 'rightReference'
+                const otherSideReference = side === 'RIGHT' ? 'leftReference' : 'rightReference'
+                request = this.api.db.userDb?.(relation.name)
+                    .where(`${shortSide}_${table}_id`, +req.params.id)
+                    .orWhere(`${shortOtherSide}_${table}_id`, +req.params.id)
+                    .join(target, function () {
+                        this.on(function () {
+                            this.onVal(`${shortSide}_${table}_id`, '!=', `${+req.params.id}`)
+                            this.andOn(`${shortSide}_${table}_id`, '=', `${table}.${relation.options[sideReference]}`)
+                            this.orOnVal(`${shortOtherSide}_${table}_id`, '!=', `${+req.params.id}`)
+                            this.andOn(`${shortOtherSide}_${table}_id`, '=', `${table}.${relation.options[otherSideReference]}`)
+                        })
+                    })
+                    .select(this.selectFields(target))
+            }
             console.log(request?.toSQL())
             return res.send(await request)
         }
@@ -120,6 +137,7 @@ export class CrudService {
             if (error.errorsFound()) return res.status(400).send(error.getMap())
             try {
                 const id = await this.api.db.userDb?.(collectionName).insert({ ...mapped })
+                await this.mapRelation(id?.[0], { ...req.body, ...req.files || {} }, collectionName, 'insert', { req, res })
                 if (id?.[0]) {
                     const item = await this.api.db.userDb?.(collectionName).where({ id: id[0] }).first()
                     return res.send(item)
@@ -172,7 +190,7 @@ export class CrudService {
         // const collection = this.api.configService.app.collections[name];
         const relations = this.api.configService.getAllRelations(name);
         const fields = this.api.configService.getFields(name);
-        for(let field of fields) {
+        for (let field of fields) {
             await this.api.fields.get(field.options.type)?.mapField(field, mapped, error, { body, name, context, options })
         }
         for (let relation of relations) {
@@ -182,8 +200,8 @@ export class CrudService {
             // }
         }
         return { mapped, error }
-    
-        
+
+
         // if (context === 'insert') {
         //     for (let field of fields) {
         //         if (field.options.default !== undefined && mapped[field.name] === undefined) {
@@ -192,6 +210,15 @@ export class CrudService {
         //     }
         // }
         // return { mapped, error };
+    }
+
+    async mapRelation(inserted: any, body: any, name: string, context?: string, options?: { req: Request, res: Response }) {
+        const relations = this.api.configService.getAllRelations(name);
+        const error = new ErrorMapper()
+        for (let relation of relations) {
+            await this.api.fields.get(relation.options.type)?.mapRelation(relation, {}, error, { body, name, context, options, inserted })
+        }
+        return { error }
     }
 
     generateDefault(type: string) {

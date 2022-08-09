@@ -73,13 +73,8 @@ export class RouterService {
             }
 
             if (relation.options.type === 'MANY TO MANY') {
-                console.log(`/${relation.options.rightTable}/:id/${relation.name}`)
-                console.log(`/${relation.options.leftTable}/:id/${relation.name}`)
                 this.router.get(`/${relation.options.rightTable}/:id/${relation.name}`,
                     this.api.crudService.getRelationsManyToMany(relation, 'RIGHT'))
-                this.router.get(`/${relation.options.leftTable}/:id/${relation.name}`,
-                    this.api.crudService.getRelationsManyToMany(relation, 'LEFT'))
-
                 this.routes.push({
                     category: relation.options.rightTable,
                     type: 'GET',
@@ -87,12 +82,16 @@ export class RouterService {
                     url: `/api/${relation.options.rightTable}/:id/${relation.name}`
                 })
 
-                this.routes.push({
-                    category: relation.options.leftTable,
-                    type: 'GET',
-                    name: `Fetch all ${pluralize(relation.name)} by ${relation.options.leftTable}`,
-                    url: `/api/${relation.options.leftTable}/:id/${relation.name}`
-                })
+                if (relation.options.leftTable !== relation.options.rightTable) {
+                    this.router.get(`/${relation.options.leftTable}/:id/${relation.name}`,
+                        this.api.crudService.getRelationsManyToMany(relation, 'LEFT'))
+                    this.routes.push({
+                        category: relation.options.leftTable,
+                        type: 'GET',
+                        name: `Fetch all ${pluralize(relation.name)} by ${relation.options.leftTable}`,
+                        url: `/api/${relation.options.leftTable}/:id/${relation.name}`
+                    })
+                }
             }
         }
 
