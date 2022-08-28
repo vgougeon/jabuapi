@@ -13,8 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CrudService = void 0;
-const bcrypt_1 = __importDefault(require("bcrypt"));
-const class_validator_1 = require("class-validator");
 const error_mapper_1 = __importDefault(require("../../utils/error-mapper"));
 const nanoid_1 = require("nanoid");
 class CrudService {
@@ -27,6 +25,7 @@ class CrudService {
         return Object.keys(collection.fields).map(key => `${collectionName}.${key}${name ? ` as ${name}.${key}` : ''}`);
     }
     toJson(result) {
+        console.log(result);
         const convertRow = (row) => {
             const result = {};
             for (const objectPath in row) {
@@ -70,6 +69,38 @@ class CrudService {
             // res.send(await request)
         });
     }
+    getRelationsAsymmetric(relation) {
+        return (req, res) => __awaiter(this, void 0, void 0, function* () {
+            var _a, _b;
+            let request = (_b = (_a = this.api.db).userDb) === null || _b === void 0 ? void 0 : _b.call(_a, relation.options.leftTable).select(this.selectFields(relation.options.leftTable)).where(relation.options.fieldName, req.params.id);
+            return res.send(this.toJson(yield request));
+        });
+    }
+    getRelationsManyToMany(relation, side) {
+        return (req, res) => __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d;
+            let table = side === 'LEFT' ? relation.options.leftTable : relation.options.rightTable;
+            let target = side === 'RIGHT' ? relation.options.leftTable : relation.options.rightTable;
+            let reference = side === 'LEFT' ? relation.options.leftReference : relation.options.rightReference;
+            let shortSide = side === 'LEFT' ? 'l' : 'r';
+            let shortOtherSide = side === 'LEFT' ? 'r' : 'l';
+            let request = (_b = (_a = this.api.db).userDb) === null || _b === void 0 ? void 0 : _b.call(_a, relation.name).where(`${shortSide}_${table}_id`, +req.params.id).join(target, `${relation.name}.${shortOtherSide}_${target}_id`, `${target}.${reference}`).select(this.selectFields(target));
+            if (relation.options.leftTable === relation.options.rightTable) {
+                const sideReference = side === 'LEFT' ? 'leftReference' : 'rightReference';
+                const otherSideReference = side === 'RIGHT' ? 'leftReference' : 'rightReference';
+                request = (_d = (_c = this.api.db).userDb) === null || _d === void 0 ? void 0 : _d.call(_c, relation.name).where(`${shortSide}_${table}_id`, +req.params.id).orWhere(`${shortOtherSide}_${table}_id`, +req.params.id).join(target, function () {
+                    this.on(function () {
+                        this.onVal(`${shortSide}_${table}_id`, '!=', `${+req.params.id}`);
+                        this.andOn(`${shortSide}_${table}_id`, '=', `${table}.${relation.options[sideReference]}`);
+                        this.orOnVal(`${shortOtherSide}_${table}_id`, '!=', `${+req.params.id}`);
+                        this.andOn(`${shortOtherSide}_${table}_id`, '=', `${table}.${relation.options[otherSideReference]}`);
+                    });
+                }).select(this.selectFields(target));
+            }
+            console.log(request === null || request === void 0 ? void 0 : request.toSQL());
+            return res.send(yield request);
+        });
+    }
     findOne(collectionName) {
         return (req, res) => __awaiter(this, void 0, void 0, function* () {
             var _a, _b;
@@ -93,6 +124,7 @@ class CrudService {
                 return res.status(400).send(error.getMap());
             try {
                 const id = yield ((_b = (_a = this.api.db).userDb) === null || _b === void 0 ? void 0 : _b.call(_a, collectionName).insert(Object.assign({}, mapped)));
+                yield this.mapRelation(id === null || id === void 0 ? void 0 : id[0], Object.assign(Object.assign({}, req.body), req.files || {}), collectionName, 'insert', { req, res });
                 if (id === null || id === void 0 ? void 0 : id[0]) {
                     const item = yield ((_d = (_c = this.api.db).userDb) === null || _d === void 0 ? void 0 : _d.call(_c, collectionName).where({ id: id[0] }).first());
                     return res.send(item);
@@ -143,83 +175,34 @@ class CrudService {
         });
     }
     mapBody(body, name, context, options) {
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             const mapped = {};
             const error = new error_mapper_1.default();
-            const collection = this.api.configService.app.collections[name];
+            // const collection = this.api.configService.app.collections[name];
             const relations = this.api.configService.getAllRelations(name);
             const fields = this.api.configService.getFields(name);
-            console.log(body);
-            if (context === 'insert') {
-                const fields = Object.entries(collection.fields).map(([name, options]) => ({ name, options }));
-                const createdAt = fields.filter(i => i.options.type === 'CREATED_AT' || i.options.type === 'UPDATED_AT');
-                const ip = fields.filter(i => i.options.type === 'IP');
-                for (let field of createdAt)
-                    mapped[field.name] = new Date();
-                for (let field of ip) {
-                    if (options === null || options === void 0 ? void 0 : options.req)
-                        mapped[field.name] = options.req.ip;
-                }
-            }
-            for (let [key, value] of Object.entries(body)) {
-                if (collection.fields[key]) {
-                    const type = collection.fields[key].type;
-                    switch (type) {
-                        case 'STRING':
-                            if (!(0, class_validator_1.maxLength)(value, 255))
-                                error.set(key, 'should be less than 255 characters');
-                            mapped[key] = value;
-                            break;
-                        case 'TEXT':
-                        case 'JSON':
-                        case 'RICHTEXT':
-                            mapped[key] = value;
-                            break;
-                        case 'MEDIA':
-                            mapped[key] = yield this.saveMedia(value);
-                            break;
-                        case 'EMAIL':
-                            if (!(0, class_validator_1.isEmail)(value))
-                                error.set(key, 'should be a valid email address');
-                            mapped[key] = value;
-                            break;
-                        case 'PASSWORD':
-                            mapped[key] = bcrypt_1.default.hashSync(String(value), 10);
-                            break;
-                        case 'DATE':
-                            mapped[key] = new Date(String(value));
-                            break;
-                        case 'BOOLEAN':
-                            mapped[key] = !!value;
-                            break;
-                        case 'INTEGER':
-                            if (!(0, class_validator_1.isNumber)(Number(value)))
-                                error.set(key, 'should be a number');
-                            if (!(0, class_validator_1.isInt)(Number(value)))
-                                error.set(key, 'should be an integer');
-                            mapped[key] = Number(value);
-                            break;
-                        case 'FLOAT':
-                            if (!(0, class_validator_1.isNumber)(Number(value)))
-                                error.set(key, 'should be a number');
-                            mapped[key] = Number(value);
-                            break;
-                    }
-                }
+            for (let field of fields) {
+                yield ((_a = this.api.fields.get(field.options.type)) === null || _a === void 0 ? void 0 : _a.mapField(field, mapped, error, { body, name, context, options }));
             }
             for (let relation of relations) {
-                if (relation.options.type === 'ASYMMETRIC' && relation.options.leftTable === name) {
-                    mapped[relation.options.fieldName] = body[relation.options.fieldName];
-                }
-            }
-            if (context === 'insert') {
-                for (let field of fields) {
-                    if (field.options.default !== undefined && mapped[field.name] === undefined) {
-                        mapped[field.name] = this.generateDefault(field.options.default);
-                    }
-                }
+                yield ((_b = this.api.fields.get(relation.options.type)) === null || _b === void 0 ? void 0 : _b.mapRelation(relation, mapped, error, { body, name, context, options }));
+                // if (relation.options.type === 'ASYMMETRIC' && relation.options.leftTable === name) {
+                //     mapped[relation.options.fieldName] = body[relation.options.fieldName]
+                // }
             }
             return { mapped, error };
+        });
+    }
+    mapRelation(inserted, body, name, context, options) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            const relations = this.api.configService.getAllRelations(name);
+            const error = new error_mapper_1.default();
+            for (let relation of relations) {
+                yield ((_a = this.api.fields.get(relation.options.type)) === null || _a === void 0 ? void 0 : _a.mapRelation(relation, {}, error, { body, name, context, options, inserted }));
+            }
+            return { error };
         });
     }
     generateDefault(type) {

@@ -4,8 +4,10 @@ export declare class RouterService {
     private api;
     app: Application;
     router: import("express-serve-static-core").Router;
+    routes: any;
     constructor(api: API);
     resetRoutes(): Promise<void>;
     generateRoutes(app: Application): Promise<boolean>;
     getMedia(): (req: Request, res: Response) => void;
+    getRoutes(): (req: Request, res: Response) => Response<any, Record<string, any>>;
 }

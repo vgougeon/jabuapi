@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const field_singleton_1 = require("./fields/field.singleton");
 const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const express_fileupload_1 = __importDefault(require("express-fileupload"));
@@ -27,9 +28,12 @@ const json_service_1 = require("./services/json.service");
 const router_service_1 = require("./services/router.service");
 const sql_1 = require("./services/routers/sql");
 const collections_1 = __importDefault(require("./services/routers/collections"));
+const actions_1 = __importDefault(require("./services/actions/actions"));
+const relations_1 = __importDefault(require("./services/routers/relations"));
 class API {
     constructor(options) {
         this.options = options;
+        this.status = 'online';
         this.app = options.app;
         this.parseOptions(options);
         this.appService = new app_service_1.AppService(this);
@@ -39,6 +43,8 @@ class API {
         this.crudService = new crud_service_1.CrudService(this);
         this.authService = new auth_service_1.AuthService(this);
         this.db = new db_1.Databases(this);
+        this.fields = new field_singleton_1.Fields(this);
+        this.actions = new actions_1.default(this);
         this.SQL = new sql_1.SQL(this);
     }
     parseOptions(options) {
@@ -61,9 +67,11 @@ class API {
             }));
             app.post('/core-api/login', this.authService.coreLogin());
             app.get('/core-api/me', this.authService.coreMe());
+            app.get('/core-api/routes', this.routerService.getRoutes());
             app.use('/core-api/setup', (0, setup_1.default)(this));
             app.use('/core-api/status', (0, status_1.StatusRoutes)(this));
             app.use('/core-api/collections', (0, collections_1.default)(this));
+            app.use('/core-api/relations', (0, relations_1.default)(this));
             yield this.initUserApi();
         });
     }

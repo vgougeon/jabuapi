@@ -1,3 +1,4 @@
+import { Fields } from './fields/field.singleton';
 import { Application } from "express";
 import { Databases } from "./databases/db";
 import { AppService } from "./services/app.service";
@@ -7,6 +8,7 @@ import { CrudService } from "./services/crud/crud.service";
 import { JsonService } from "./services/json.service";
 import { RouterService } from "./services/router.service";
 import { SQL } from "./services/routers/sql";
+import Actions from './services/actions/actions';
 export interface APIOptions {
     /** Your express application goes here. */
     app: Application;
@@ -24,8 +26,11 @@ export default class API {
     routerService: RouterService;
     crudService: CrudService;
     authService: AuthService;
+    fields: Fields;
+    actions: Actions;
     db: Databases;
     SQL: SQL;
+    status: string;
     constructor(options: APIOptions);
     parseOptions(options: APIOptions): void;
     init(): Promise<void>;

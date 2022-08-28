@@ -7,7 +7,9 @@ export declare class SQL {
     appendSQL(sql: string, instruction: Promise<any>): Promise<void>;
     createCollection(collection: {
         [name: string]: ICollection;
-    }): void;
+    }): Promise<void>;
+    deleteCollection(name: string): Promise<void>;
+    renameCollection(name: string, newName: string): Promise<void>;
     addField(collection: string, body: {
         [key: string]: IField;
     }): any;

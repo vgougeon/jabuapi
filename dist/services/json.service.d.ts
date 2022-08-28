@@ -6,4 +6,6 @@ export declare class JsonService {
     getOrCreate(fileName: 'app.json'): Promise<IApp>;
     get(fileName: string): Promise<any>;
     create(fileName: string, object: Object): Promise<void>;
+    getOrCreateFile(fileName: string, defaultValue: any): Promise<any>;
+    overwriteFile(fileName: string, value: any): Promise<void>;
 }

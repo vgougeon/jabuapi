@@ -14,7 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SQL = void 0;
 const promises_1 = __importDefault(require("fs/promises"));
-const field_singleton_1 = require("../../fields/field.singleton");
+const action_enum_1 = require("../actions/action.enum");
+const utils_1 = require("../../utils/utils");
 class SQL {
     constructor(API) {
         this.API = API;
@@ -39,25 +40,41 @@ class SQL {
         });
     }
     createCollection(collection) {
-        var _a;
-        const name = Object.keys(collection)[0];
-        const fields = Object.entries(collection[name].fields).map(([name, options]) => ({ name, options }));
-        const creating = (_a = this.API.db.userDb) === null || _a === void 0 ? void 0 : _a.schema.createTable(name, (table) => {
-            var _a;
+        var _a, _b;
+        return __awaiter(this, void 0, void 0, function* () {
+            const name = Object.keys(collection)[0];
+            const fields = Object.entries(collection[name].fields).map(([name, options]) => ({ name, options }));
+            yield ((_a = this.API.db.userDb) === null || _a === void 0 ? void 0 : _a.schema.createTable(name, (table) => {
+                table.timestamp('__jabuapi__');
+            }));
+            this.API.actions.create(action_enum_1.EAction.CreateTable, (0, utils_1.toNameOptions)(collection).name);
             for (let field of fields) {
-                (_a = field_singleton_1.FieldSingleton.get(field.options.type)) === null || _a === void 0 ? void 0 : _a.createField(table, field);
+                if (this.API.db.userDb) {
+                    (_b = this.API.fields.get(field.options.type)) === null || _b === void 0 ? void 0 : _b.createField(name, field);
+                }
             }
         });
-        this.appendSQL(creating.toString(), creating);
+    }
+    deleteCollection(name) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            yield ((_a = this.API.db.userDb) === null || _a === void 0 ? void 0 : _a.schema.dropTableIfExists(name));
+            this.API.actions.create(action_enum_1.EAction.DeleteTable, name);
+        });
+    }
+    renameCollection(name, newName) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            yield ((_a = this.API.db.userDb) === null || _a === void 0 ? void 0 : _a.schema.renameTable(name, newName));
+            this.API.actions.create(action_enum_1.EAction.RenameTable, { name, newName });
+        });
     }
     addField(collection, body) {
         var _a;
         const field = Object.entries(body).map(([name, options]) => ({ name, options }))[0];
-        const adding = (_a = this.API.db.userDb) === null || _a === void 0 ? void 0 : _a.schema.alterTable(collection, (table) => {
-            var _a;
-            (_a = field_singleton_1.FieldSingleton.get(field.options.type)) === null || _a === void 0 ? void 0 : _a.createField(table, field);
-        });
-        this.appendSQL(adding.toString(), adding);
+        if (this.API.db.userDb) {
+            (_a = this.API.fields.get(field.options.type)) === null || _a === void 0 ? void 0 : _a.createField(collection, field);
+        }
     }
     editField(collection, field, body) {
         var _a;

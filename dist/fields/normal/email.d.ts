@@ -1,10 +1,14 @@
-import { Knex } from "knex";
 import { IField } from "../../types/app.interface";
 import { Field } from "../field.class";
 export declare class FieldEmail extends Field {
     name: string;
-    createField(table: Knex.CreateTableBuilder, field: {
+    createField(table: string, field: {
         name: string;
         options: IField;
-    }): void;
+    }): Promise<void>;
+    deleteField(table: string, name: string): Promise<void>;
+    mapField(field: {
+        name: string;
+        options: IField;
+    }, mapped: any, error: any, context: any): Promise<void>;
 }

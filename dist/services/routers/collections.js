@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const promises_1 = __importDefault(require("fs/promises"));
+const utils_1 = require("../../utils/utils");
 //TODO : stop reading app.json, read config variable
 function CollectionRouter(API) {
     const router = (0, express_1.Router)();
@@ -47,7 +48,7 @@ function CollectionRouter(API) {
             };
             return f;
         })
-            .then((f) => __awaiter(this, void 0, void 0, function* () { return (yield promises_1.default.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f); }))
+            .then((f) => __awaiter(this, void 0, void 0, function* () { return (yield API.configService.setApp(f), f); }))
             .then(f => (res.send(f), f))
             .then(f => API.SQL.createCollection({ [req.body.name]: f.collections[req.body.name] }))
             .catch(err => {
@@ -68,8 +69,9 @@ function CollectionRouter(API) {
             delete f.collections[req.params.collection];
             return f;
         })
-            .then(f => (promises_1.default.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+            .then(f => (API.configService.setApp(f), f))
             .then(f => res.send(f))
+            .then(f => API.SQL.deleteCollection(req.params.collection))
             .catch(err => {
             if (err.syscall === 'open')
                 res.status(200).send("NO DATA");
@@ -78,6 +80,24 @@ function CollectionRouter(API) {
             else
                 res.status(400).send('Unknown error');
         });
+    });
+    //RENAME COLLECTION
+    router.post('/:collection/rename', (req, res) => {
+        const name = req.params.collection;
+        const newName = req.body.name;
+        if (!(name && newName))
+            return res.status(400).send('No name provided');
+        API.jsonService.get('app.json')
+            .then(f => {
+            const temp = f.collections[name];
+            delete f.collections[name];
+            f.collections[newName] = temp;
+            //TODO: make sure collection has no relations
+            return f;
+        })
+            .then(f => (API.configService.setApp(f), f))
+            .then(f => res.send(f))
+            .then(() => API.SQL.renameCollection(name, newName));
     });
     // ADD FIELD
     router.post('/:collection/add_field', (req, res) => {
@@ -88,9 +108,12 @@ function CollectionRouter(API) {
                 f.relations = Object.assign(Object.assign({}, f.relations), req.body);
                 return f;
             })
-                .then(f => (promises_1.default.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+                .then(f => (API.configService.setApp(f), f))
                 .then(f => res.send(f))
-                .then(() => API.SQL.addRelation(req.params.collection, req.body));
+                .then(() => {
+                var _a;
+                (_a = API.fields.get(added.type)) === null || _a === void 0 ? void 0 : _a.createRelation((0, utils_1.toNameOptions)(req.body));
+            });
         }
         else {
             promises_1.default.stat(API.options.root + '/app.json')
@@ -100,9 +123,10 @@ function CollectionRouter(API) {
                 f.collections[req.params.collection].fields = Object.assign(Object.assign({}, f.collections[req.params.collection].fields), req.body);
                 return f;
             })
-                .then(f => (promises_1.default.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+                .then(f => (API.configService.setApp(f), f))
                 .then(f => res.send(f))
-                .then(() => API.SQL.addField(req.params.collection, req.body))
+                // .then(() => API.SQL.addField(req.params.collection, req.body))
+                .then(() => { var _a; return (_a = API.fields.get(added.type)) === null || _a === void 0 ? void 0 : _a.createField(req.params.collection, (0, utils_1.toNameOptions)(req.body)); })
                 .catch(err => {
                 if (err.syscall === 'open')
                     res.status(200).send("NO DATA");
@@ -122,7 +146,7 @@ function CollectionRouter(API) {
             f.collections[req.params.collection] = Object.assign(Object.assign({}, f.collections[req.params.collection]), req.body);
             return f;
         })
-            .then(f => (promises_1.default.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+            .then(f => (API.configService.setApp(f), f))
             .then(f => res.send(f))
             .catch(err => {
             if (err.syscall === 'open')
@@ -144,7 +168,7 @@ function CollectionRouter(API) {
             f.collections[req.params.collection].config = Object.assign(Object.assign({}, f.collections[req.params.collection].config), req.body);
             return f;
         })
-            .then(f => (promises_1.default.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+            .then(f => (API.configService.setApp(f), f))
             .then(f => res.send(f))
             .catch(err => {
             if (err.syscall === 'open')
@@ -166,7 +190,7 @@ function CollectionRouter(API) {
             f.collections[req.params.collection].fields = Object.assign(Object.assign({}, f.collections[req.params.collection].fields), req.body);
             return f;
         })
-            .then((f) => __awaiter(this, void 0, void 0, function* () { return (yield promises_1.default.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f); }))
+            .then((f) => __awaiter(this, void 0, void 0, function* () { return (yield API.configService.setApp(f), f); }))
             .then(f => (res.send(f), f))
             .then(f => API.SQL.editField(req.params.collection, req.params.field, req.body))
             .catch(err => {
@@ -187,8 +211,12 @@ function CollectionRouter(API) {
                 delete f.relations[req.params.field];
                 return f;
             })
-                .then(f => (promises_1.default.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
-                .then(f => (res.send(f), f));
+                .then(f => (API.configService.setApp(f), f))
+                .then(f => (res.send(f), f))
+                .then(f => {
+                var _a;
+                (_a = API.fields.get(type)) === null || _a === void 0 ? void 0 : _a.deleteRelation(req.body);
+            });
         }
         else {
             promises_1.default.stat(API.options.root + '/app.json')
@@ -198,9 +226,13 @@ function CollectionRouter(API) {
                 delete f.collections[req.params.collection].fields[req.params.field];
                 return f;
             })
-                .then(f => (promises_1.default.writeFile(API.options.root + '/app.json', JSON.stringify(f, null, '\t')), f))
+                .then(f => (API.configService.setApp(f), f))
                 .then(f => res.send(f))
-                .then(() => API.SQL.removeField(req.params.collection, req.params.field))
+                // .then(() => API.SQL.removeField(req.params.collection, req.params.field))
+                .then(() => {
+                var _a;
+                (_a = API.fields.get(type)) === null || _a === void 0 ? void 0 : _a.deleteField(req.params.collection, req.body.name);
+            })
                 .catch(err => {
                 if (err.syscall === 'open')
                     res.status(200).send("NO DATA");

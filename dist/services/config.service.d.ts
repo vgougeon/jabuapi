@@ -15,5 +15,8 @@ export declare class ConfigService {
         name: string;
         options: import("../types/app.interface").IField;
     }[];
+    getRelationByName(relationName: string): import("../types/app.interface").IRelation;
     getCollectionByName(collectionName: string): import("../types/app.interface").ICollection;
+    setApp(app: IApp): Promise<void>;
+    refreshConfig(): Promise<void>;
 }

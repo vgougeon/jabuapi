@@ -9,13 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FieldEmail = void 0;
-const class_validator_1 = require("class-validator");
+exports.FieldMedia = void 0;
 const field_class_1 = require("../field.class");
-class FieldEmail extends field_class_1.Field {
+class FieldMedia extends field_class_1.Field {
     constructor() {
         super(...arguments);
-        this.name = 'EMAIL';
+        this.name = 'MEDIA';
     }
     createField(table, field) {
         const _super = Object.create(null, {
@@ -54,11 +53,24 @@ class FieldEmail extends field_class_1.Field {
         return __awaiter(this, void 0, void 0, function* () {
             _super.mapField.call(this, field, mapped, error, context);
             if (context.body[field.name]) {
-                if (!(0, class_validator_1.isEmail)(context.body[field.name]))
-                    error.set(field.name, 'should be an email');
-                mapped[field.name] = context.body[field.name];
+                console.log(context.body[field.name]);
+                mapped[field.name] = yield this.saveMedia(context.body[field.name]);
             }
         });
     }
+    saveMedia(media) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //TODO: Create directory automatically
+            const path = `${this.api.options.root}/medias/${media.name}`;
+            return new Promise((resolve, reject) => {
+                media.mv(path, (err) => {
+                    if (err)
+                        return reject(err);
+                    else
+                        resolve(`/api/medias/${media.name}`);
+                });
+            });
+        });
+    }
 }
-exports.FieldEmail = FieldEmail;
+exports.FieldMedia = FieldMedia;

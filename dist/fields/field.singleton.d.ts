@@ -1,5 +1,8 @@
+import API from "..";
 import { Field } from "./field.class";
-export declare abstract class FieldSingleton {
-    static fields: Field[];
-    static get(name: string): Field | undefined;
+export declare class Fields {
+    private api;
+    constructor(api: API);
+    fields: Field[];
+    get(name: string): Field | undefined;
 }

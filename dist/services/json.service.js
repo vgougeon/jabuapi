@@ -51,5 +51,23 @@ class JsonService {
             return yield promises_1.default.writeFile(this.api.options.root + '/' + fileName, JSON.stringify(object, null, '\t'));
         });
     }
+    getOrCreateFile(fileName, defaultValue) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield promises_1.default.stat(this.api.options.root + '/' + fileName);
+            }
+            catch (_a) {
+                yield this.create(fileName, defaultValue);
+            }
+            const read = yield promises_1.default.readFile(this.api.options.root + '/' + fileName);
+            const object = JSON.parse(read.toString());
+            return object;
+        });
+    }
+    overwriteFile(fileName, value) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield promises_1.default.writeFile(this.api.options.root + '/' + fileName, JSON.stringify(value, null, '\t'));
+        });
+    }
 }
 exports.JsonService = JsonService;

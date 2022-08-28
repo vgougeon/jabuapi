@@ -10,16 +10,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppService = void 0;
-const field_singleton_1 = require("../fields/field.singleton");
 class AppService {
     constructor(api) {
         this.api = api;
     }
     initDb() {
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
+            this.api.status = 'setup';
             const config = yield this.api.jsonService.getOrCreate('app.json');
-            if (!config)
-                return false;
+            this.api.configService.app = config;
             const collections = Object.entries(config.collections)
                 .map(([name, options]) => ({ name, options }));
             const relations = Object.entries(config.relations)
@@ -36,32 +36,17 @@ class AppService {
                     const fields = Object.entries(collection.options.fields)
                         .map(([name, options]) => ({ name, options: options }));
                     yield this.api.db.userDb.schema.createTable(collection.name, (table) => {
-                        var _a;
-                        for (let field of fields) {
-                            (_a = field_singleton_1.FieldSingleton.get(field.options.type)) === null || _a === void 0 ? void 0 : _a.createField(table, field);
-                        }
+                        table.timestamp('__jabuapi__');
                     });
+                    for (let field of fields) {
+                        (_a = this.api.fields.get(field.options.type)) === null || _a === void 0 ? void 0 : _a.createField(collection.name, field);
+                    }
                 }
                 for (let relation of relations) {
-                    if (relation.options.type === 'MANY TO MANY') {
-                        yield this.api.db.userDb.schema.createTable(relation.name, (table) => {
-                            table.integer(`${relation.options.leftTable}_${relation.options.leftReference}`).unsigned().notNullable();
-                            table.foreign(`${relation.options.leftTable}_${relation.options.leftReference}`)
-                                .references(relation.options.leftReference).inTable(relation.options.leftTable);
-                            table.integer(`${relation.options.rightTable}_${relation.options.rightReference}`).unsigned().notNullable();
-                            table.foreign(`${relation.options.rightTable}_${relation.options.rightReference}`)
-                                .references(relation.options.rightReference).inTable(relation.options.rightTable);
-                        });
-                    }
-                    if (relation.options.type === 'ASYMMETRIC') {
-                        yield this.api.db.userDb.schema.alterTable(relation.options.leftTable, (table) => {
-                            table.integer(relation.options.fieldName).unsigned();
-                            table.foreign(relation.options.fieldName)
-                                .references(relation.options.rightReference).inTable(relation.options.rightTable);
-                        });
-                    }
+                    yield ((_b = this.api.fields.get(relation.options.type)) === null || _b === void 0 ? void 0 : _b.createRelation(relation));
                 }
                 yield this.api.db.userDb.raw('SET FOREIGN_KEY_CHECKS = 1;');
+                this.api.status = 'online';
             }
             return true;
         });

@@ -52,6 +52,7 @@ function createSetupRoutes(API) {
             }
         }, null, '\t'));
         const app = JSON.parse(yield promises_1.default.readFile(API.options.root + '/settings.json', { encoding: "utf-8" }));
+        API.configService.refreshConfig();
         delete app.appPassword;
         return res.send(app);
     }));
