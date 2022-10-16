@@ -3,6 +3,7 @@ import knex from "knex";
 import bcrypt from "bcrypt";
 import fs from 'fs/promises';
 import API from "../../index";
+import jwt from 'jsonwebtoken';
 
 
 export default function createSetupRoutes(API: API) {
@@ -47,6 +48,7 @@ export default function createSetupRoutes(API: API) {
         const app = JSON.parse(await fs.readFile(API.options.root + '/settings.json', { encoding: "utf-8" }))
         API.configService.refreshConfig()
         delete app.appPassword
+        res.setHeader('authorization', jwt.sign('core-admin', 'SECRET'))
         return res.send(app)
     })
     
