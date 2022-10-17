@@ -88,7 +88,7 @@ export default function CollectionRouter(API: API) {
     // ADD FIELD
     router.post('/:collection/add_field', (req: Request, res: Response) => {
         const [added] = Object.values(req.body) as [any]
-        if (added.type === 'MANY TO MANY' || added.type === 'ASYMMETRIC' || added.type === 'ONE TO ONE') {
+        if (added.type === 'MANY TO MANY' || added.type === 'ASYMMETRIC' || added.type === 'ONE TO ONE' || added.type === 'ORDERED LIST') {
             API.jsonService.get('app.json')
                 .then(f => {
                     f.relations = { ...f.relations, ...req.body }

@@ -11,7 +11,7 @@ export class JsonService {
             await fs.stat(this.api.options.root + '/' + fileName)
         }
         catch {
-            await this.create(fileName, { collections: {}, relations: {}})
+            await this.create(fileName, { collections: {}, relations: {}, enums: {}})
         }
         const read = await fs.readFile(this.api.options.root + '/' + fileName)
         const object = JSON.parse(read.toString())

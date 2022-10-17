@@ -16,6 +16,7 @@ import { SQL } from "./services/routers/sql";
 import CollectionRouter from "./services/routers/collections";
 import Actions from './services/actions/actions';
 import RelationRouter from './services/routers/relations';
+import EnumRouter from './services/routers/enums';
 
 export interface APIOptions {
     /** Your express application goes here. */
@@ -83,6 +84,7 @@ export default class API {
         app.use('/core-api/status', StatusRoutes(this))
         app.use('/core-api/collections', CollectionRouter(this))
         app.use('/core-api/relations', RelationRouter(this))
+        app.use('/core-api/enums', EnumRouter(this))
 
         await this.initUserApi()
 
