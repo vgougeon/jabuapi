@@ -111,7 +111,7 @@ export default class API {
 
     async checkRoot() {
         try {
-            await checkFolderExists(this.options.root, true)
+            await checkFolderExists(this.options.root)
             return true
         }
         catch (err) {
