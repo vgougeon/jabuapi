@@ -23,9 +23,7 @@ export class JsonService {
             .then(() => fs.readFile(this.api.options.root + '/' + fileName))
             .then(f => JSON.parse(f.toString()))
             .catch(err => {
-                if (err.syscall === 'open') console.log('No config yet. Skipping')
-                if (err.syscall === 'stat') console.log('No config yet. Skipping')
-                else console.log('Unknown error. Skipping')
+                return null
             })
     }
 

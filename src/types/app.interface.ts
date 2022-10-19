@@ -2,11 +2,11 @@ export interface IField {
     type: 'ID' | 'STRING' | 'INTEGER' | 'FLOAT' | 'CREATED_AT' | 
     'IP' | 'UPDATED_AT' | 'DATE' | 'BOOLEAN' | 'TEXT' | 'EMAIL' |
      'PASSWORD' | 'RICHTEXT' | 'JSON' | 'MEDIA' | 'ENUM'
-    nullable: boolean;
-    unique: boolean;
+    nullable?: boolean;
+    unique?: boolean;
     default?: string;
-    relation: string;
-    reference: string;
+    relation?: string;
+    reference?: string;
     enumName?: string;
 }
 
