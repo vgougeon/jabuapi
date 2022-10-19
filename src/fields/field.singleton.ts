@@ -18,6 +18,7 @@ import { FieldText } from "./normal/text";
 import { FieldUpdatedAt } from "./normal/updatedAt";
 import { RelationAsymmetric } from "./relations/asymmetric";
 import { RelationManyToMany } from "./relations/manytomany";
+import { RelationOneToOne } from "./relations/onetoone";
 import { RelationOrderedList } from "./relations/orderedlist";
 
 export class Fields {
@@ -43,7 +44,8 @@ export class Fields {
         new FieldMedia(this.api),
         new RelationAsymmetric(this.api),
         new RelationManyToMany(this.api),
-        new RelationOrderedList(this.api)
+        new RelationOrderedList(this.api),
+        new RelationOneToOne(this.api)
     ]
 
     get(name: string) {

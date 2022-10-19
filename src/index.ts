@@ -18,8 +18,8 @@ import Actions from './services/actions/actions';
 import RelationRouter from './services/routers/relations';
 import EnumRouter from './services/routers/enums';
 import { checkFolderExists } from './utils/file';
-import { logger } from './classes/logger';
 import apiProcess from './classes/api-process';
+require('dotenv').config()
 
 export interface APIOptions {
     /** Your express application goes here. */

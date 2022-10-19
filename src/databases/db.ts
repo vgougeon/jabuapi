@@ -19,6 +19,7 @@ export class Databases {
 
     async connectToUserDb() {
         const appConfig = this.api.configService.config
+        console.log(appConfig)
         if(appConfig) {
                 this.userDbName = appConfig.database.database;
                 this.userDb = knex({

@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import API from '../index';
 import { IApp } from '../types/app.interface';
+import { IConfig } from '../types/config.interface';
 
 export class JsonService {
 
@@ -45,6 +46,22 @@ export class JsonService {
 
     async overwriteFile(fileName: string, value: any) {
         return await fs.writeFile(this.api.options.root + '/' + fileName, JSON.stringify(value, null, '\t'))
+    }
+
+    getConfig() {
+        return fs.stat(this.api.options.root + '/' + 'settings.json')
+            .then(() => fs.readFile(this.api.options.root + '/' + 'settings.json'))
+            .then(f => JSON.parse(f.toString()))
+            .then(f => {
+                (f as IConfig).database.database = process.env['DB_NAME'] || (f as IConfig).database.database;
+                (f as IConfig).database.host = process.env['DB_HOST'] || (f as IConfig).database.host;
+                (f as IConfig).database.user = process.env['DB_USER'] || (f as IConfig).database.user;
+                (f as IConfig).database.password = process.env['DB_PASSWORD'] || (f as IConfig).database.password;
+                return f
+            })
+            .catch(err => {
+                return null
+            })
     }
 
     
