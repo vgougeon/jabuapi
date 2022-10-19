@@ -25,7 +25,7 @@ class Databases {
     }
     connectToUserDb() {
         return __awaiter(this, void 0, void 0, function* () {
-            const appConfig = yield this.api.jsonService.get('settings.json');
+            const appConfig = this.api.configService.config;
             if (appConfig) {
                 this.userDbName = appConfig.database.database;
                 this.userDb = (0, knex_1.knex)({

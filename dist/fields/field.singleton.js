@@ -5,6 +5,7 @@ const boolean_1 = require("./normal/boolean");
 const createdAt_1 = require("./normal/createdAt");
 const date_1 = require("./normal/date");
 const email_1 = require("./normal/email");
+const enum_1 = require("./normal/enum");
 const float_1 = require("./normal/float");
 const id_1 = require("./normal/id");
 const integer_1 = require("./normal/integer");
@@ -18,6 +19,7 @@ const text_1 = require("./normal/text");
 const updatedAt_1 = require("./normal/updatedAt");
 const asymmetric_1 = require("./relations/asymmetric");
 const manytomany_1 = require("./relations/manytomany");
+const orderedlist_1 = require("./relations/orderedlist");
 class Fields {
     constructor(api) {
         this.api = api;
@@ -35,10 +37,12 @@ class Fields {
             new richText_1.FieldRichText(this.api),
             new string_1.FieldString(this.api),
             new text_1.FieldText(this.api),
+            new enum_1.FieldEnum(this.api),
             new updatedAt_1.FieldUpdatedAt(this.api),
             new media_1.FieldMedia(this.api),
             new asymmetric_1.RelationAsymmetric(this.api),
-            new manytomany_1.RelationManyToMany(this.api)
+            new manytomany_1.RelationManyToMany(this.api),
+            new orderedlist_1.RelationOrderedList(this.api)
         ];
     }
     get(name) {

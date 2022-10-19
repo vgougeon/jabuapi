@@ -30,6 +30,9 @@ const sql_1 = require("./services/routers/sql");
 const collections_1 = __importDefault(require("./services/routers/collections"));
 const actions_1 = __importDefault(require("./services/actions/actions"));
 const relations_1 = __importDefault(require("./services/routers/relations"));
+const enums_1 = __importDefault(require("./services/routers/enums"));
+const file_1 = require("./utils/file");
+const api_process_1 = __importDefault(require("./classes/api-process"));
 class API {
     constructor(options) {
         this.options = options;
@@ -48,8 +51,9 @@ class API {
         this.SQL = new sql_1.SQL(this);
     }
     parseOptions(options) {
+        options.root = options.root.replace(/\\/g, '/');
         if (options.root.endsWith('/'))
-            options.root.slice(0, -1);
+            options.root = options.root.slice(0, -1);
         if (options.force === undefined)
             options.force = false;
     }
@@ -72,13 +76,16 @@ class API {
             app.use('/core-api/status', (0, status_1.StatusRoutes)(this));
             app.use('/core-api/collections', (0, collections_1.default)(this));
             app.use('/core-api/relations', (0, relations_1.default)(this));
+            app.use('/core-api/enums', (0, enums_1.default)(this));
             yield this.initUserApi();
         });
     }
     initUserApi() {
         return __awaiter(this, void 0, void 0, function* () {
             const app = this.app;
-            yield this.db.connectToUserDb()
+            yield this.checkRoot()
+                .then(() => this.configService.setup())
+                .then(() => this.db.connectToUserDb())
                 .then(() => { if (this.options.force)
                 return this.appService.initDb(); })
                 .then(() => this.routerService.generateRoutes(app))
@@ -88,6 +95,17 @@ class API {
                     res.sendFile(path_1.default.join(__dirname, '../admin/index.html'));
                 });
             });
+        });
+    }
+    checkRoot() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield (0, file_1.checkFolderExists)(this.options.root, true);
+                return true;
+            }
+            catch (err) {
+                api_process_1.default.stopProcess(`Root folder provided for JABU API does not exist, please create it before restarting : ${this.options.root}`);
+            }
         });
     }
 }

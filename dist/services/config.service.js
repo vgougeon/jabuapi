@@ -14,15 +14,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConfigService = void 0;
 const promises_1 = __importDefault(require("fs/promises"));
+const logger_1 = require("../classes/logger");
 class ConfigService {
     constructor(api) {
         this.api = api;
-        this.setup();
     }
     setup() {
         return __awaiter(this, void 0, void 0, function* () {
             this.app = yield this.api.jsonService.getOrCreate('app.json');
             this.config = yield this.api.jsonService.get('settings.json');
+            if (this.api.options.force)
+                logger_1.logger.debug(`JABU API is running in ${logger_1.Colors.BgRed}${logger_1.Colors.FgBlack} FORCE ${logger_1.Colors.Reset} mode, which means your database will be erased and recreated on restart.`);
+            if (!this.config)
+                logger_1.logger.debug(`Welcome to JABU API ! Initialize your app by connecting to your express server on the browser`);
             return true;
         });
     }

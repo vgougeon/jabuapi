@@ -24,7 +24,7 @@ class JsonService {
                 yield promises_1.default.stat(this.api.options.root + '/' + fileName);
             }
             catch (_a) {
-                yield this.create(fileName, { collections: {}, relations: {} });
+                yield this.create(fileName, { collections: {}, relations: {}, enums: {} });
             }
             const read = yield promises_1.default.readFile(this.api.options.root + '/' + fileName);
             const object = JSON.parse(read.toString());
@@ -37,12 +37,7 @@ class JsonService {
                 .then(() => promises_1.default.readFile(this.api.options.root + '/' + fileName))
                 .then(f => JSON.parse(f.toString()))
                 .catch(err => {
-                if (err.syscall === 'open')
-                    console.log('No config yet. Skipping');
-                if (err.syscall === 'stat')
-                    console.log('No config yet. Skipping');
-                else
-                    console.log('Unknown error. Skipping');
+                return null;
             });
         });
     }

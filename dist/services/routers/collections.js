@@ -15,70 +15,40 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const promises_1 = __importDefault(require("fs/promises"));
 const utils_1 = require("../../utils/utils");
-//TODO : stop reading app.json, read config variable
+const lodash_1 = __importDefault(require("lodash"));
+//TODO : stop reading app.json, read config variable (3 routes done)
 function CollectionRouter(API) {
     const router = (0, express_1.Router)();
     router.get('/', (req, res) => {
-        API.jsonService.get('app.json')
-            .then(f => res.send(f))
-            .catch(err => {
-            if (err.syscall === 'open')
-                res.status(200).send("NO DATA");
-            if (err.syscall === 'stat')
-                res.status(200).send("NO DATA");
-            else
-                res.status(400).send('Unknown error');
-        });
+        if (!API.configService.app)
+            return res.status(200).send("NO DATA");
+        else
+            return res.send(API.configService.app);
     });
-    // CREATE COLLECTION
     router.post('/', (req, res) => {
-        promises_1.default.stat(API.options.root + '/app.json')
-            .then(() => promises_1.default.readFile(API.options.root + '/app.json'))
-            .then(f => JSON.parse(f.toString()))
-            .then(f => {
-            f.collections[req.body.name] = {
-                fields: {
-                    id: {
-                        type: 'ID'
-                    },
-                    createdAt: {
-                        type: 'CREATED_AT'
-                    }
+        const app = lodash_1.default.cloneDeep(API.configService.app);
+        app.collections[req.body.name] = {
+            fields: {
+                id: {
+                    type: 'ID'
+                },
+                createdAt: {
+                    type: 'CREATED_AT'
                 }
-            };
-            return f;
-        })
-            .then((f) => __awaiter(this, void 0, void 0, function* () { return (yield API.configService.setApp(f), f); }))
-            .then(f => (res.send(f), f))
-            .then(f => API.SQL.createCollection({ [req.body.name]: f.collections[req.body.name] }))
-            .catch(err => {
-            if (err.syscall === 'open')
-                res.status(200).send("NO DATA");
-            if (err.syscall === 'stat')
-                res.status(200).send("NO DATA");
-            else
-                res.status(400).send('Unknown error');
+            }
+        };
+        API.configService.setApp(app).then(() => {
+            res.send(API.configService.app);
+            API.SQL.createCollection({ [req.body.name]: app.collections[req.body.name] });
         });
     });
     // DELETE COLLECTION
     router.delete('/:collection', (req, res) => {
-        promises_1.default.stat(API.options.root + '/app.json')
-            .then(() => promises_1.default.readFile(API.options.root + '/app.json'))
-            .then(f => JSON.parse(f.toString()))
-            .then(f => {
-            delete f.collections[req.params.collection];
-            return f;
-        })
-            .then(f => (API.configService.setApp(f), f))
-            .then(f => res.send(f))
-            .then(f => API.SQL.deleteCollection(req.params.collection))
-            .catch(err => {
-            if (err.syscall === 'open')
-                res.status(200).send("NO DATA");
-            if (err.syscall === 'stat')
-                res.status(200).send("NO DATA");
-            else
-                res.status(400).send('Unknown error');
+        const app = lodash_1.default.cloneDeep(API.configService.app);
+        delete app.collections[req.params.collection];
+        API.configService.setApp(app).then(() => {
+            res.send(API.configService.app);
+            API.SQL.deleteCollection(req.params.collection);
         });
     });
     //RENAME COLLECTION
@@ -87,22 +57,18 @@ function CollectionRouter(API) {
         const newName = req.body.name;
         if (!(name && newName))
             return res.status(400).send('No name provided');
-        API.jsonService.get('app.json')
-            .then(f => {
-            const temp = f.collections[name];
-            delete f.collections[name];
-            f.collections[newName] = temp;
-            //TODO: make sure collection has no relations
-            return f;
-        })
-            .then(f => (API.configService.setApp(f), f))
-            .then(f => res.send(f))
-            .then(() => API.SQL.renameCollection(name, newName));
+        const app = lodash_1.default.cloneDeep(API.configService.app);
+        app.collections[newName] = app.collections[name];
+        delete app.collections[name];
+        API.configService.setApp(app).then(() => {
+            res.send(API.configService.app);
+            API.SQL.renameCollection(name, newName);
+        });
     });
     // ADD FIELD
     router.post('/:collection/add_field', (req, res) => {
         const [added] = Object.values(req.body);
-        if (added.type === 'MANY TO MANY' || added.type === 'ASYMMETRIC' || added.type === 'ONE TO ONE') {
+        if (added.type === 'MANY TO MANY' || added.type === 'ASYMMETRIC' || added.type === 'ONE TO ONE' || added.type === 'ORDERED LIST') {
             API.jsonService.get('app.json')
                 .then(f => {
                 f.relations = Object.assign(Object.assign({}, f.relations), req.body);

@@ -35,4 +35,5 @@ export default class API {
     parseOptions(options: APIOptions): void;
     init(): Promise<void>;
     initUserApi(): Promise<void>;
+    checkRoot(): Promise<true | undefined>;
 }

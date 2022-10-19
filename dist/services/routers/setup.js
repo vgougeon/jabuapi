@@ -16,6 +16,7 @@ const express_1 = require("express");
 const knex_1 = __importDefault(require("knex"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const promises_1 = __importDefault(require("fs/promises"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 function createSetupRoutes(API) {
     const router = (0, express_1.Router)();
     router.post('/db-test', (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -54,6 +55,7 @@ function createSetupRoutes(API) {
         const app = JSON.parse(yield promises_1.default.readFile(API.options.root + '/settings.json', { encoding: "utf-8" }));
         API.configService.refreshConfig();
         delete app.appPassword;
+        res.setHeader('authorization', jsonwebtoken_1.default.sign('core-admin', 'SECRET'));
         return res.send(app);
     }));
     router.post('/edit-db', (req, res) => __awaiter(this, void 0, void 0, function* () {
