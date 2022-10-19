@@ -28,9 +28,11 @@ export interface IRelation {
     unique: boolean;
     leftTable: string;
     leftReference: string;
+    leftFieldName: string;
     fieldName: string;
     rightTable: string;
     rightReference: string;
+    rightFieldName: string;
 }
 
 export interface IEnum {

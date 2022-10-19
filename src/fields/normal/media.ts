@@ -32,7 +32,6 @@ export class FieldMedia extends Field {
     }
 
     async saveMedia(media: UploadedFile) {
-        //TODO: Create directory automatically
         const path = `${this.api.options.root}/medias/${media.name}`
         await checkFolderExists(`${this.api.options.root}/medias/`, true)
         return new Promise((resolve, reject) => {
