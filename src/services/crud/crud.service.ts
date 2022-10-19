@@ -7,6 +7,7 @@ import ErrorMapper from '../../utils/error-mapper';
 import fileUpload, { UploadedFile } from 'express-fileupload';
 import { nanoid } from 'nanoid';
 import API from '../../index';
+import { checkFolderExists } from '../../utils/file';
 export class CrudService {
     constructor(private api: API) { }
 
@@ -176,6 +177,7 @@ export class CrudService {
 
     async saveMedia(media: UploadedFile) {
         const path = `${this.api.options.root}/medias/${media.name}`
+        await checkFolderExists(`${this.api.options.root}/medias/`, true)
         return new Promise((resolve, reject) => {
             media.mv(path, (err) => {
                 if (err) return reject(err)
