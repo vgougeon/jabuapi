@@ -19,6 +19,7 @@ import RelationRouter from './services/routers/relations';
 import EnumRouter from './services/routers/enums';
 import { checkFolderExists } from './utils/file';
 import apiProcess from './classes/api-process';
+import SeedRouter from './services/routers/seed';
 require('dotenv').config()
 
 export interface APIOptions {
@@ -89,6 +90,7 @@ export default class API {
         app.use('/core-api/collections', CollectionRouter(this))
         app.use('/core-api/relations', RelationRouter(this))
         app.use('/core-api/enums', EnumRouter(this))
+        app.use('/core-api/seeding', SeedRouter(this))
 
         await this.initUserApi()
 

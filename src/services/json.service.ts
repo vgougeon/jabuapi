@@ -1,13 +1,13 @@
 import fs from 'fs/promises';
 import API from '../index';
-import { IApp } from '../types/app.interface';
+import { IApp, ISeed } from '../types/app.interface';
 import { IConfig } from '../types/config.interface';
 
 export class JsonService {
 
     constructor(private api: API) {}
     
-    async getOrCreate(fileName: 'app.json'): Promise<IApp> {
+    async getOrCreate(fileName: 'app.json' | 'seeding.json'): Promise<IApp> {
         try {
             await fs.stat(this.api.options.root + '/' + fileName)
         }
@@ -64,6 +64,11 @@ export class JsonService {
             })
     }
 
-    
+    getSeed(): Promise<ISeed[]> {
+        return fs.stat(this.api.options.root + '/' + 'seeding.json')
+            .then(() => fs.readFile(this.api.options.root + '/' + 'seeding.json'))
+            .then(f => JSON.parse(f.toString()))
+    }
+
 
 }

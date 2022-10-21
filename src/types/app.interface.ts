@@ -51,3 +51,10 @@ export interface IApp {
         [name: string]: IEnum
     }
 }
+
+export interface ISeed {
+    id: string;
+    entity: string;
+    payload: any;
+    children?: ISeed[];
+}
