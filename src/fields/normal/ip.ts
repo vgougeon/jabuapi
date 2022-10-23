@@ -26,6 +26,6 @@ export class FieldIP extends Field {
         if(context.body[field.name]) {
             mapped[field.name] = context.body[field.name]
         }
-        else if(context.context === 'insert') mapped[field.name] = context.options.req.ip
+        else if(context.context === 'insert') mapped[field.name] = context.options.req.ip || 'localhost'
     }
 }

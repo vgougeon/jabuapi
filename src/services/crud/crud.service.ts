@@ -148,7 +148,7 @@ export class CrudService {
                 }
             }
             catch (err: any) {
-                console.log("ERROR", err.sqlMessage)
+                console.log("SQL ERROR", err.sqlMessage)
                 return res.status(500).send(err.sqlMessage)
             }
         }

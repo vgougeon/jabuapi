@@ -54,7 +54,8 @@ export interface IApp {
 
 export interface ISeed {
     id: string;
-    entity: string;
+    collection: string;
+    quantity: number;
     payload: any;
     children?: ISeed[];
 }

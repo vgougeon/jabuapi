@@ -29,7 +29,7 @@ export class AppService {
                     table.timestamp('__jabuapi__')
                 })
                 for (let field of fields) {
-                    this.api.fields.get(field.options.type)?.createField(collection.name, field)
+                    await this.api.fields.get(field.options.type)?.createField(collection.name, field)
                 }
             }
 

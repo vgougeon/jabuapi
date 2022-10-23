@@ -3,6 +3,7 @@ import { IApp, ISeed } from "../types/app.interface";
 import { IConfig } from "../types/config.interface";
 import fs from 'fs/promises';
 import { Colors, logger } from "../classes/logger";
+import { Seeder } from "../classes/seeder";
 
 export class ConfigService {
     app!: IApp;
@@ -44,7 +45,17 @@ export class ConfigService {
         .then(() => this.api.routerService.resetRoutes())
     }
 
+    setSeed(seed: ISeed[]) {
+        return fs.writeFile(this.api.options.root + '/seeding.json', JSON.stringify(seed, null, '\t'))
+        .then(() => this.seed = seed)
+    }
+
     async refreshConfig() {
         this.config = await this.api.jsonService.getConfig()
+    }
+
+    async autoSeed() {
+        const seeder = new Seeder(this.seed, this.api)
+        return await seeder.launchSeed()
     }
 }

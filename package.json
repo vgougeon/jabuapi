@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/vgougeon/jabuapi#readme",
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@ungap/structured-clone": "^1.0.1",
     "bcrypt": "^5.0.1",
     "better-sqlite3": "^7.5.0",

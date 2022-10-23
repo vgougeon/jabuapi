@@ -51,8 +51,24 @@ export class AuthService {
                     else return res.status(401).send('failed')
                 }
             }
-            
             return res.status(401).send('failed')
+        }
+    }
+
+    me(collectionName: string) {
+        return async (req: Request, res: Response) => {
+            const token = req.headers['authorization']
+            if(!token) return res.status(401).send('No token provided')
+            try {
+                const verify = jwt.verify(token, 'SECRET')
+                if(verify) {
+                    const item = await this.api.db.userDb?.(collectionName).where({ id: verify }).first()
+                    if(item) return res.status(201).send(item)
+                }
+                return res.status(401).send('Invalid token')
+            } catch(err) {
+                return res.status(401).send('Invalid token')
+            }
         }
     }
 

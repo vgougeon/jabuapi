@@ -50,7 +50,6 @@ export class Fields {
 
     get(name: string) {
         const c = this.fields.find(f => f.name === name)
-        console.log("Getting type " + name)
         if(!c) console.error('No field class found with name : ' + name)
         return c
     }

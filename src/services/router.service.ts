@@ -24,8 +24,16 @@ export class RouterService {
 
         const authCollection = collections.find(c => !!c.options.config?.auth?.identifier)
         if (authCollection) {
+            this.router.get(`/me`, this.api.authService.me(authCollection.name))
             this.router.post(`/login`, this.api.authService.login(authCollection.name))
             this.router.post(`/register`, this.api.authService.register(authCollection.name))
+
+            this.routes.push({
+                category: 'Authentication',
+                type: 'GET',
+                name: `Me`,
+                url: `/api/me`
+            })
 
             this.routes.push({
                 category: 'Authentication',

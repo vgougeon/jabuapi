@@ -102,6 +102,7 @@ export default class API {
             .then(() => this.configService.setup())
             .then(() => this.db.connectToUserDb())
             .then(() => { if(this.options.force) return this.appService.initDb() })
+            .then(() => this.configService.autoSeed())
             .then(() => this.routerService.generateRoutes(app))
             .then(() => {
                 app.use('/', express.static(path.join(__dirname, '../admin/')))
