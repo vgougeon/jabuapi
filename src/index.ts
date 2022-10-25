@@ -16,6 +16,11 @@ import { SQL } from "./services/routers/sql";
 import CollectionRouter from "./services/routers/collections";
 import Actions from './services/actions/actions';
 import RelationRouter from './services/routers/relations';
+import EnumRouter from './services/routers/enums';
+import { checkFolderExists } from './utils/file';
+import apiProcess from './classes/api-process';
+import SeedRouter from './services/routers/seed';
+require('dotenv').config()
 
 export interface APIOptions {
     /** Your express application goes here. */
@@ -56,7 +61,8 @@ export default class API {
     }
 
     parseOptions(options: APIOptions) {
-        if(options.root.endsWith('/')) options.root.slice(0, -1)
+        options.root = options.root.replace(/\\/g, '/')
+        if(options.root.endsWith('/')) options.root = options.root.slice(0, -1)
         if(options.force === undefined) options.force = false
     }
 
@@ -83,6 +89,8 @@ export default class API {
         app.use('/core-api/status', StatusRoutes(this))
         app.use('/core-api/collections', CollectionRouter(this))
         app.use('/core-api/relations', RelationRouter(this))
+        app.use('/core-api/enums', EnumRouter(this))
+        app.use('/core-api/seeding', SeedRouter(this))
 
         await this.initUserApi()
 
@@ -90,8 +98,11 @@ export default class API {
 
     async initUserApi() {
         const app = this.app
-        await this.db.connectToUserDb()
+        await this.checkRoot()
+            .then(() => this.configService.setup())
+            .then(() => this.db.connectToUserDb())
             .then(() => { if(this.options.force) return this.appService.initDb() })
+            .then(() => this.configService.autoSeed())
             .then(() => this.routerService.generateRoutes(app))
             .then(() => {
                 app.use('/', express.static(path.join(__dirname, '../admin/')))
@@ -99,5 +110,15 @@ export default class API {
                     res.sendFile(path.join(__dirname, '../admin/index.html'))
                 })
             })
+    }
+
+    async checkRoot() {
+        try {
+            await checkFolderExists(this.options.root)
+            return true
+        }
+        catch (err) {
+            apiProcess.stopProcess(`Root folder provided for JABU API does not exist, please create it before restarting : ${this.options.root}`)
+        }
     }
 }

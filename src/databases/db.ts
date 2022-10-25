@@ -1,4 +1,5 @@
 import { Knex, knex } from 'knex';
+import { logger } from '../classes/logger';
 import API from '../index';
 import { IConfig } from '../types/config.interface';
 export class Databases {
@@ -18,7 +19,7 @@ export class Databases {
     }
 
     async connectToUserDb() {
-        const appConfig: IConfig = await this.api.jsonService.get('settings.json')
+        const appConfig = this.api.configService.config
         if(appConfig) {
                 this.userDbName = appConfig.database.database;
                 this.userDb = knex({
@@ -27,9 +28,11 @@ export class Databases {
                 })
                 try {
                     await this.userDb.raw('SELECT 1 as isUp')
+                    logger.notify('✔ - Your database is connected')
                 }
                 catch(err) {
                     this.userDb = null
+                    logger.error(`❌ - Couldn't connect to your database`)
                     return false
                 }
         }

@@ -1,12 +1,13 @@
 export interface IField {
     type: 'ID' | 'STRING' | 'INTEGER' | 'FLOAT' | 'CREATED_AT' | 
     'IP' | 'UPDATED_AT' | 'DATE' | 'BOOLEAN' | 'TEXT' | 'EMAIL' |
-     'PASSWORD' | 'RICHTEXT' | 'JSON' | 'MEDIA'
-    nullable: boolean;
-    unique: boolean;
+     'PASSWORD' | 'RICHTEXT' | 'JSON' | 'MEDIA' | 'ENUM'
+    nullable?: boolean;
+    unique?: boolean;
     default?: string;
-    relation: string;
-    reference: string;
+    relation?: string;
+    reference?: string;
+    enumName?: string;
 }
 
 export interface ICollection {
@@ -22,14 +23,21 @@ export interface ICollection {
 }
 
 export interface IRelation {
-    type: 'ASYMMETRIC' | 'MANY TO MANY';
+    type: 'ASYMMETRIC' | 'MANY TO MANY' | 'ORDERED LIST' | 'ONE TO ONE';
     nullable: boolean;
     unique: boolean;
     leftTable: string;
     leftReference: string;
+    leftFieldName: string;
     fieldName: string;
     rightTable: string;
     rightReference: string;
+    rightFieldName: string;
+}
+
+export interface IEnum {
+    entries: string[],
+    type?: 'ROLE'
 }
 
 export interface IApp {
@@ -38,5 +46,16 @@ export interface IApp {
     }
     relations: {
         [name: string]: IRelation
+    },
+    enums: {
+        [name: string]: IEnum
     }
+}
+
+export interface ISeed {
+    id: string;
+    collection: string;
+    quantity: number;
+    payload: any;
+    children?: ISeed[];
 }

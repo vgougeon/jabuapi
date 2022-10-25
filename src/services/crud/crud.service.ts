@@ -8,6 +8,7 @@ import fileUpload, { UploadedFile } from 'express-fileupload';
 import { nanoid } from 'nanoid';
 import API from '../../index';
 import { sortMapper } from '../../utils/utils';
+import { checkFolderExists } from '../../utils/file';
 export class CrudService {
     constructor(private api: API) { }
 
@@ -178,7 +179,7 @@ export class CrudService {
                 }
             }
             catch (err: any) {
-                console.log("ERROR", err.sqlMessage)
+                console.log("SQL ERROR", err.sqlMessage)
                 return res.status(500).send(err.sqlMessage)
             }
         }
@@ -207,6 +208,7 @@ export class CrudService {
 
     async saveMedia(media: UploadedFile) {
         const path = `${this.api.options.root}/medias/${media.name}`
+        await checkFolderExists(`${this.api.options.root}/medias/`, true)
         return new Promise((resolve, reject) => {
             media.mv(path, (err) => {
                 if (err) return reject(err)

@@ -1,18 +1,22 @@
 import API from "../index";
-import { IApp } from "../types/app.interface";
+import { IApp, ISeed } from "../types/app.interface";
 import { IConfig } from "../types/config.interface";
 import fs from 'fs/promises';
+import { Colors, logger } from "../classes/logger";
+import { Seeder } from "../classes/seeder";
 
 export class ConfigService {
     app!: IApp;
     config!: IConfig;
-    constructor(private api: API) {
-        this.setup()
-    }
+    seed!: ISeed[];
+    constructor(private api: API) {}
 
     async setup() {
         this.app = await this.api.jsonService.getOrCreate('app.json');
-        this.config = await this.api.jsonService.get('settings.json');
+        this.seed = await this.api.jsonService.getSeed();
+        this.config = await this.api.jsonService.getConfig()
+        if(this.api.options.force) logger.debug(`JABU API is running in ${Colors.BgRed}${Colors.FgBlack} FORCE ${Colors.Reset} mode, which means your database will be erased and recreated on restart.`)
+        if(!this.config) logger.debug(`Welcome to JABU API ! Initialize your app by connecting to your express server on the browser`)
         return true
     }
 
@@ -41,7 +45,17 @@ export class ConfigService {
         .then(() => this.api.routerService.resetRoutes())
     }
 
+    setSeed(seed: ISeed[]) {
+        return fs.writeFile(this.api.options.root + '/seeding.json', JSON.stringify(seed, null, '\t'))
+        .then(() => this.seed = seed)
+    }
+
     async refreshConfig() {
-        this.config = await this.api.jsonService.get('settings.json');
+        this.config = await this.api.jsonService.getConfig()
+    }
+
+    async autoSeed() {
+        const seeder = new Seeder(this.seed, this.api)
+        return await seeder.launchSeed()
     }
 }

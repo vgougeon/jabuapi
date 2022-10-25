@@ -1,6 +1,7 @@
 import { UploadedFile } from "express-fileupload";
 import { Knex } from "knex";
 import { IField } from "../../types/app.interface";
+import { checkFolderExists } from "../../utils/file";
 import { Field } from "../field.class";
 
 export class FieldMedia extends Field {
@@ -31,8 +32,8 @@ export class FieldMedia extends Field {
     }
 
     async saveMedia(media: UploadedFile) {
-        //TODO: Create directory automatically
         const path = `${this.api.options.root}/medias/${media.name}`
+        await checkFolderExists(`${this.api.options.root}/medias/`, true)
         return new Promise((resolve, reject) => {
             media.mv(path, (err) => {
                 if (err) return reject(err)
