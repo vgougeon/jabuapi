@@ -7,6 +7,7 @@ import ErrorMapper from '../../utils/error-mapper';
 import fileUpload, { UploadedFile } from 'express-fileupload';
 import { nanoid } from 'nanoid';
 import API from '../../index';
+import { sortMapper } from '../../utils/utils';
 import { checkFolderExists } from '../../utils/file';
 export class CrudService {
     constructor(private api: API) { }
@@ -63,6 +64,36 @@ export class CrudService {
                 //         `${relation.options.leftTable}.${relation.options.fieldName}`
                 //     ).select(this.selectFields(relation.options.leftTable, relation.options.fieldName))
                 // }
+            }
+
+            let sort = sortMapper(req)
+            for(let s of sort) {
+                s = s.split('.')
+                request = request?.orderBy([{  column: s[0], order: s[1] || 'asc' }])
+            }
+            
+            console.log(req.query.sort)
+
+            let pageSize = 10
+
+            if(req.query.limit) { 
+                if(isNaN(+req.query.limit)) { 
+                    return res.status(400).send({ 'error': 'Limit should be a number'})
+                }
+                if(+req.query.limit < 1) {
+                    return res.status(400).send({ 'error': 'Limit should be a number >= 1'})
+                }
+                request = request?.limit(+req.query.limit)
+            }
+
+            if(req.query.page) { 
+                if(isNaN(+req.query.page)) { 
+                    return res.status(400).send({ 'error': 'Page should be a number'})
+                }
+                if(+req.query.page < 1) {
+                    return res.status(400).send({ 'error': 'Page should be a number >= 1'})
+                }
+                request = request?.limit(+req.query.page * pageSize).offset((+req.query.page - 1) * pageSize)
             }
 
             res.send(this.toJson(await request as any))
