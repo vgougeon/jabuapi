@@ -1,0 +1,65 @@
+.react-flow__handle {
+    border: 1px solid;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
+    width: 8px;
+    height: 8px;
+    transition: 0.05s;
+
+    @apply bg-white dark:bg-gray-500 dark:border-gray-400;
+
+    &:hover {
+        border-color: rgb(55, 125, 255);
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+        width: 8px;
+        height: 8px;
+    }
+
+    &.add-handle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        border-radius: 4px;
+        right: -8px;
+        &:hover {
+            width: 20px;
+            height: 20px;
+        }
+    }
+}
+.box {
+    width: min-content;
+    height: auto;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid white;
+    /* position: absolute; */
+}
+
+.name {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.9rem;
+    border-bottom: 1px solid white;
+    font-weight: 600;
+    text-align: center;
+}
+.name:hover {
+    background: white;
+}
+
+.attributes {
+    padding: 0.3rem 0;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+}
+
+.attribute {
+    font-size: 0.8rem;
+    padding: 0.2rem 1rem;
+}
+
+.attribute:hover {
+    background-color: white;
+}
