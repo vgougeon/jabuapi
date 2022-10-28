@@ -1,7 +1,13 @@
 {
     "pipeline": {
         "build": {
-            "outputs": ["build/**"]
+            "dependsOn": ["^build"]
+        },
+        "api#build": {
+            "outputs": ["../build/**"]
+        },
+        "dashboard#build": {
+            "outputs": ["../ui/**"]
         },
         "lint": {
             "outputs": []

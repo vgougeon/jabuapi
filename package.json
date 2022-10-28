@@ -4,6 +4,10 @@
   },
   "name": "jabuapi",
   "version": "1.0.0",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "turbo run build --filter=./api --force"
+  },
   "dependencies": {
     "turbo-windows-64": "^1.6.1"
   },

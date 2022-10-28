@@ -1,4 +1,4 @@
-api/src
+api
 dashboard
 api/docker-compose.yml
 api/tsconfig.json

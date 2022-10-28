@@ -167,8 +167,8 @@ To ignore, add // eslint-disable-next-line to the line before.
 
 File sizes after gzip:
 
-  743.37 kB  build\static\js\main.54c2cbb5.js
-  5.78 kB    build\static\css\main.8df98a46.css
+  743.37 kB  ui\static\js\main.54c2cbb5.js
+  5.78 kB    ui\static\css\main.8df98a46.css
 
 The bundle size is significantly larger than recommended.
 Consider reducing it with code splitting: https://goo.gl/9VhYWB
@@ -177,11 +177,11 @@ You can also analyze the project dependencies: https://goo.gl/LeUzfb
 The project was built assuming it is hosted at /.
 You can control this with the homepage field in your package.json.
 
-The build folder is ready to be deployed.
+The ..\ui folder is ready to be deployed.
 You may serve it with a static server:
 
   npm install -g serve
-  serve -s build
+  serve -s ..\ui
 
 Find out more about deployment here:
 
