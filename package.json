@@ -4,13 +4,14 @@
   },
   "name": "jabuapi",
   "version": "1.0.0",
-  "main": "./api/build/index.js",
-  "types": "./api/build/index.d.ts",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
     "build": "turbo run build --filter=./api --force"
   },
   "dependencies": {
+    "jabuapi": "file:api",
     "turbo-windows-64": "^1.6.1"
   },
   "repository": {
