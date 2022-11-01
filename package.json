@@ -4,8 +4,8 @@
   },
   "name": "jabuapi",
   "version": "1.0.0",
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "main": "./api/build/index.js",
+  "types": "./api/build/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
     "build": "turbo run build --filter=./api --force"

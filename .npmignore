@@ -1,7 +1,10 @@
-api
 dashboard
 api/docker-compose.yml
 api/tsconfig.json
 api/index.ts
 api/nodemon.json
 api/test.ts
+api/src
+api/.env
+api/data
+api/.turbo
