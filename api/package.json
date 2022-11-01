@@ -1,5 +1,5 @@
 {
-  "name": "jabuapi",
+  "name": "@vgougeon/jabuapi",
   "version": "1.0.0",
   "description": "Jabu API - Headless CMS",
   "main": "./dist/index.js",

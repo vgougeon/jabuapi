@@ -11,7 +11,7 @@
     "build": "turbo run build --filter=./api --force"
   },
   "dependencies": {
-    "jabuapi": "file:api",
+    "@vgougeon/jabuapi": "*",
     "turbo-windows-64": "^1.6.1"
   },
   "repository": {
