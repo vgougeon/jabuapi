@@ -9,3 +9,4 @@ nodemon.json
 front
 data
 data/actions.json
+dist
