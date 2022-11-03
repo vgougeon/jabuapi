@@ -6,6 +6,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
+    "dev": "nodemon index.ts",
     "build": "tsc"
   },
   "repository": {
