@@ -1,9 +1,9 @@
 version: '3'
  
 services:
-  db:
+  jabuapi-db:
     image: mysql:5.7
-    container_name: db
+    container_name: jabuapi-db
     environment:
       MYSQL_ROOT_PASSWORD: azerty31
       MYSQL_DATABASE: db

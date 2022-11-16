@@ -19,7 +19,6 @@ export class CrudService {
     }
 
     toJson(result: { [key: string]: any } | { [key: string]: any }[]) {
-        console.log(result)
         const convertRow = (row: { [key: string]: any }) => {
             const result: any = {};
             for (const objectPath in row) {
@@ -71,11 +70,7 @@ export class CrudService {
                 s = s.split('.')
                 request = request?.orderBy([{  column: s[0], order: s[1] || 'asc' }])
             }
-            
-            console.log(req.query.sort)
-
             let pageSize = 10
-
             if(req.query.limit) { 
                 if(isNaN(+req.query.limit)) { 
                     return res.status(400).send({ 'error': 'Limit should be a number'})
