@@ -69,34 +69,34 @@ export class RouterService {
 
         for (let relation of relations) {
             if (relation.options.type === 'ASYMMETRIC') {
-                console.log(`/${relation.options.rightTable}/:id/${relation.options.fieldName}`)
-                this.router.get(`/${relation.options.rightTable}/:id/${relation.options.fieldName}`,
+                console.log(`/${relation.options.rightTable}/:id/${relation.options.rightFieldName}`)
+                this.router.get(`/${relation.options.rightTable}/:id/${relation.options.rightFieldName}`,
                     this.api.crudService.getRelationsAsymmetric(relation))
                 this.routes.push({
                     category: relation.options.rightTable,
                     type: 'GET',
-                    name: `Fetch all ${pluralize(relation.options.fieldName)} by ${relation.options.rightTable}`,
-                    url: `/api/${relation.options.rightTable}/:id/${relation.options.fieldName}`
+                    name: `Fetch all ${relation.options.rightFieldName} by ${relation.options.rightTable}`,
+                    url: `/api/${relation.options.rightTable}/:id/${relation.options.rightFieldName}`
                 })
             }
 
             if (relation.options.type === 'MANY TO MANY') {
-                this.router.get(`/${relation.options.rightTable}/:id/${relation.name}`,
+                this.router.get(`/${relation.options.rightTable}/:id/${relation.options.rightFieldName}`,
                     this.api.crudService.getRelationsManyToMany(relation, 'RIGHT'))
                 this.routes.push({
                     category: relation.options.rightTable,
                     type: 'GET',
-                    name: `Fetch all ${pluralize(relation.name)} by ${relation.options.rightTable}`,
+                    name: `Fetch all ${relation.options.rightFieldName} by ${relation.options.rightTable}`,
                     url: `/api/${relation.options.rightTable}/:id/${relation.name}`
                 })
 
                 if (relation.options.leftTable !== relation.options.rightTable) {
-                    this.router.get(`/${relation.options.leftTable}/:id/${relation.name}`,
+                    this.router.get(`/${relation.options.leftTable}/:id/${relation.options.leftFieldName}`,
                         this.api.crudService.getRelationsManyToMany(relation, 'LEFT'))
                     this.routes.push({
                         category: relation.options.leftTable,
                         type: 'GET',
-                        name: `Fetch all ${pluralize(relation.name)} by ${relation.options.leftTable}`,
+                        name: `Fetch all ${relation.options.leftFieldName} by ${relation.options.leftTable}`,
                         url: `/api/${relation.options.leftTable}/:id/${relation.name}`
                     })
                 }

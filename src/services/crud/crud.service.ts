@@ -12,9 +12,10 @@ import { checkFolderExists } from '../../utils/file';
 export class CrudService {
     constructor(private api: API) { }
 
-    selectFields(collectionName: string, name = '') {
+    selectFields(collectionName: string, name = '', type = '') {
         const collection = this.api.configService.getCollectionByName(collectionName)
         console.log(Object.keys(collection.fields).map(key => `${collectionName}.${key}`).join(', '))
+        if(type === 'array') return Object.keys(collection.fields).map(key => this.api.db.userDb?.raw(`JSON_ARRAYAGG(${collectionName}.${key})${name ? ` as ${name}.${key}` : ''}`))
         return Object.keys(collection.fields).map(key => `${collectionName}.${key}${name ? ` as ${name}.${key}` : ''}`)
     }
 
@@ -33,6 +34,7 @@ export class CrudService {
 
             return result;
         }
+        console.log(result)
         if (Array.isArray(result)) {
             return result.map(row => convertRow(row))
         }
@@ -47,50 +49,54 @@ export class CrudService {
 
             for (let relation of relations) {
                 //MANY TO ONE
-                if (relation.options.type === 'ASYMMETRIC' && relation.options.leftTable === collectionName)
+                if (relation.options.type === 'ASYMMETRIC' && relation.options.leftTable === collectionName) {
+                    console.log('relation detected, joining', relation.name)
                     request = request?.leftJoin(
                         relation.options.rightTable,
                         `${relation.options.rightTable}.${relation.options.rightReference}`,
-                        `${collectionName}.${relation.options.fieldName}`
-                    ).select(this.selectFields(relation.options.rightTable, relation.options.fieldName))
+                        `${collectionName}.${relation.options.leftFieldName}`
+                    ).select(this.selectFields(relation.options.rightTable, relation.options.leftFieldName))
+                }
 
-                //ONE TO MANY
-                // if(relation.options.rightTable === collectionName) {
-                //     console.log(relation)
+
+                // ONE TO MANY
+                // if (relation.options.rightTable === collectionName) {
+                //     console.log('MANY relation detected, joining', relation.name)
                 //     request = request?.leftJoin(
                 //         relation.options.leftTable,
                 //         `${relation.options.rightTable}.${relation.options.rightReference}`,
-                //         `${relation.options.leftTable}.${relation.options.fieldName}`
-                //     ).select(this.selectFields(relation.options.leftTable, relation.options.fieldName))
+                //         `${relation.options.leftTable}.${relation.options.leftFieldName}`
+                //     ).select(this.selectFields(relation.options.leftTable, relation.options.rightFieldName, 'array'))
                 // }
             }
 
             let sort = sortMapper(req)
-            for(let s of sort) {
+            for (let s of sort) {
                 s = s.split('.')
-                request = request?.orderBy([{  column: s[0], order: s[1] || 'asc' }])
+                request = request?.orderBy([{ column: s[0], order: s[1] || 'asc' }])
             }
             let pageSize = 10
-            if(req.query.limit) { 
-                if(isNaN(+req.query.limit)) { 
-                    return res.status(400).send({ 'error': 'Limit should be a number'})
+            if (req.query.limit) {
+                if (isNaN(+req.query.limit)) {
+                    return res.status(400).send({ 'error': 'Limit should be a number' })
                 }
-                if(+req.query.limit < 1) {
-                    return res.status(400).send({ 'error': 'Limit should be a number >= 1'})
+                if (+req.query.limit < 1) {
+                    return res.status(400).send({ 'error': 'Limit should be a number >= 1' })
                 }
                 request = request?.limit(+req.query.limit)
             }
 
-            if(req.query.page) { 
-                if(isNaN(+req.query.page)) { 
-                    return res.status(400).send({ 'error': 'Page should be a number'})
+            if (req.query.page) {
+                if (isNaN(+req.query.page)) {
+                    return res.status(400).send({ 'error': 'Page should be a number' })
                 }
-                if(+req.query.page < 1) {
-                    return res.status(400).send({ 'error': 'Page should be a number >= 1'})
+                if (+req.query.page < 1) {
+                    return res.status(400).send({ 'error': 'Page should be a number >= 1' })
                 }
                 request = request?.limit(+req.query.page * pageSize).offset((+req.query.page - 1) * pageSize)
             }
 
+            request = request?.groupBy(`${collectionName}.id`)
             res.send(this.toJson(await request as any))
             // res.send(await request)
         }

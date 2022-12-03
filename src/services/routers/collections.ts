@@ -6,6 +6,7 @@ import { IRelation } from "../../types/app.interface";
 import { toNameOptions } from "../../utils/utils";
 import { EAction } from '../actions/action.enum';
 import _ from 'lodash';
+import { nanoid } from 'nanoid';
 
 //TODO : stop reading app.json, read config variable (3 routes done)
 export default function CollectionRouter(API: API) {
@@ -60,18 +61,16 @@ export default function CollectionRouter(API: API) {
 
     // ADD FIELD
     router.post('/:collection/add_field', (req: Request, res: Response) => {
-        const [added] = Object.values(req.body) as [any]
+        const app = _.cloneDeep(API.configService.app)
+        const [key] = Object.keys(req.body)
+        const [added] = Object.values(req.body) as any
+        if(key === 'temp') req.body = { [`${added.leftTable}_${added.rightTable}_${nanoid()}`]: added}
         if (added.type === 'MANY TO MANY' || added.type === 'ASYMMETRIC' || added.type === 'ONE TO ONE' || added.type === 'ORDERED LIST') {
-            API.jsonService.get('app.json')
-                .then(f => {
-                    f.relations = { ...f.relations, ...req.body }
-                    return f
-                })
-                .then(f => (API.configService.setApp(f), f))
-                .then(f => res.send(f))
-                .then(() => {
-                    API.fields.get(added.type)?.createRelation(toNameOptions<IRelation>(req.body))
-                })
+            app.relations = { ...app.relations, ...req.body}
+            API.configService.setApp(app).then(() => {
+                res.send(app)
+                API.fields.get(added.type)?.createRelation(toNameOptions<IRelation>(req.body))
+            })
         }
         else {
             fs.stat(API.options.root + '/app.json')

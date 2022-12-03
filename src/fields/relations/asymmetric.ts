@@ -8,8 +8,8 @@ export class RelationAsymmetric extends Field {
     async createRelation(relation: { name: string; options: IRelation; }) {
         super.createRelation(relation)
         return await this.api.db.userDb?.schema.alterTable(relation.options.leftTable, (table) => {
-            table.integer(relation.options.fieldName).unsigned()
-            table.foreign(relation.options.fieldName)
+            table.integer(relation.options.leftFieldName).unsigned()
+            table.foreign(relation.options.leftFieldName)
                 .references(relation.options.rightReference).inTable(relation.options.rightTable)
         })
     }
@@ -24,7 +24,7 @@ export class RelationAsymmetric extends Field {
 
     async mapRelation(relation: { name: string; options: IRelation }, mapped: any, error: any, context: any) {
         if(relation.options.leftTable === context.name) {
-            mapped[relation.options.fieldName] = context.body[relation.options.fieldName]
+            mapped[relation.options.leftFieldName] = context.body[relation.options.leftFieldName]
         }
     }
 }

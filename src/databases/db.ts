@@ -5,17 +5,10 @@ import { IConfig } from '../types/config.interface';
 export class Databases {
 
     userDb: Knex<any> | null = null;
-    coreDb: Knex<any>;
 
     userDbName: string = '';
 
     constructor(private api: API) {
-        this.coreDb = knex({
-            client: 'better-sqlite3',
-            connection: {
-                filename: 'coredb.sqlite'
-            }
-        })
     }
 
     async connectToUserDb() {
