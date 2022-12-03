@@ -7,7 +7,6 @@ export default function RelationRouter(API: API) {
 
     router.delete('/:relation', (req: Request, res: Response) => {
         const name = req.params.relation
-        console.log(name)
         const relation = API.configService.getRelationByName(name)
         let config = API.configService.app
         API.fields.get(relation.type)?.deleteRelation({

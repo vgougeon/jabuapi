@@ -17,8 +17,8 @@ export class RelationAsymmetric extends Field {
     async deleteRelation(relation: { name: string; options: IRelation; }) {
         super.deleteRelation(relation)
         return await this.api.db.userDb?.schema.alterTable(relation.options.leftTable, (table) => {
-            table.dropForeign(relation.options.fieldName)
-            table.dropColumn(relation.options.fieldName)  
+            table.dropForeign(relation.options.leftFieldName)
+            table.dropColumn(relation.options.leftFieldName)  
         })
     }
 

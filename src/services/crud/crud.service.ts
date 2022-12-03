@@ -34,7 +34,6 @@ export class CrudService {
 
             return result;
         }
-        console.log(result)
         if (Array.isArray(result)) {
             return result.map(row => convertRow(row))
         }
@@ -106,7 +105,7 @@ export class CrudService {
         return async (req: Request, res: Response) => {
             let request = this.api.db.userDb?.(relation.options.leftTable)
                 .select(this.selectFields(relation.options.leftTable))
-                .where(relation.options.fieldName, req.params.id)
+                .where(relation.options.leftFieldName, req.params.id)
             return res.send(this.toJson(await request as any))
         }
     }
@@ -154,8 +153,8 @@ export class CrudService {
                     query = query?.leftJoin(
                         relation.options.rightTable,
                         `${relation.options.rightTable}.${relation.options.rightReference}`,
-                        `${collectionName}.${relation.options.fieldName}`
-                    ).select(this.selectFields(relation.options.rightTable, relation.options.fieldName))
+                        `${collectionName}.${relation.options.leftFieldName}`
+                    ).select(this.selectFields(relation.options.rightTable, relation.options.leftFieldName))
             }
 
             const item = await query?.first()
