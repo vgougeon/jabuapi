@@ -11,6 +11,7 @@ export class FieldEnum extends Field {
             let t = builder.string(field.name)
             if (field.options.nullable) t.nullable(); else t.notNullable()
             if (field.options.unique) t.unique();
+            if (field.options.default !== undefined) t.defaultTo(field.options.default);
         })
     }
 
@@ -23,7 +24,7 @@ export class FieldEnum extends Field {
 
     async mapField(field: { name: string; options: IField }, mapped: any, error: any, context: any) {
         super.mapField(field, mapped, error, context)
-        if(context.body[field.name]) {
+        if(context.body[field.name] !== undefined) {
             if(!field.options.enumName) error.set(field.name, 'Enum not found in config')
             else {
                 const E = this.api.configService.app.enums[field.options.enumName]

@@ -1,4 +1,3 @@
-import { Knex } from "knex";
 import { IField } from "../../types/app.interface";
 import { Field } from "../field.class";
 import bcrypt from 'bcrypt';
@@ -11,6 +10,7 @@ export class FieldPassword extends Field {
             let t = builder.string(field.name)
             if (field.options.nullable) t.nullable(); else t.notNullable()
             if (field.options.unique) t.unique();
+            if (field.options.default !== undefined) t.defaultTo(field.options.default);
         })
     }
 
@@ -23,7 +23,7 @@ export class FieldPassword extends Field {
 
     async mapField(field: { name: string; options: IField }, mapped: any, error: any, context: any) {
         super.mapField(field, mapped, error, context)
-        if(context.body[field.name]) {
+        if(context.body[field.name] !== undefined) {
             mapped[field.name] = bcrypt.hashSync(String(context.body[field.name]), 10);
         }
     }
